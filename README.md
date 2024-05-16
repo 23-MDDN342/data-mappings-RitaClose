@@ -10,3 +10,6 @@ This README should be used to document your design.
 I am not a fan so far. Object Oriented coding is difficult and I don't entirely understand it. So far I have imported my characters face into the new code framework but the variables aren't working right so far so I need to tinker a bit to make them better. Also I need to re-orient all of the measurements so that they follow the faces from the AI instead of keeping the same all the time.
 
 https://23-mddn342.github.io/data-mappings-RitaClose/ 
+
+16/05
+Today I got the tilt and the jaw drop to work, I am going to do the eyes and fix the neck before I move on to training the system then adding in some of the conditional variables and attributes.

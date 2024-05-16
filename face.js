@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 6;
@@ -155,7 +155,6 @@ function Face() {
     }
     let sideTilt = (segment_average(positions.nose_bridge)[0]) * 20;
     let cOffset = sideTilt;
-    console.log(sideTilt);
 
     
     //Draw Hydra Face
@@ -169,7 +168,7 @@ function Face() {
       yDip = sideTilt * 0.1;
 
       rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
-      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+      // leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
 
       noStroke();
       fill(300, 100, 100);
@@ -188,7 +187,7 @@ function Face() {
       crOffset = sideTilt * 0.75;
       yDip = (sideTilt * -1) * 0.1;
 
-      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+      // leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
       rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
     
       noStroke();
@@ -628,8 +627,9 @@ function Face() {
       endShape(CLOSE);
     }
                     //-0.39
+                    // console.log(cOffset);
     //Neck
-    // if(cOffset <=0) {
+    if(cOffset <=0) {
       //Second Band
         //Bottom Quad
         fill(baseColour, 100, 10);
@@ -677,7 +677,7 @@ function Face() {
         let band1aY = [YPos - 5.5, YPos - 5, YPos - 3, YPos - 3];
         quad(band1aX[0], band1aY[0], band1aX[1], band1aY[1], band1aX[2], band1aY[2], band1aX[3], band1aY[3]);
         DrawScales(false, 5 + (cOffset / -4), 4, band1aX, band1aY, baseColour, scaleBrightness, scaleStrokeBrightness);
-    // }
+    }
   
     //Face Points
     let faceX = [XPos + (crOffset * 1.05), XPos + 6 + rOffset, XPos + 4 + rOffset, XPos + 3 + crOffset];
@@ -691,7 +691,7 @@ function Face() {
   
     //Draw Face
     fill(baseColour, 100, 70);
-    quad(faceX[0], faceY[0], faceX[1], faceY[1], faceX[2], faceY[2], faceX[3], faceY[3]);
+    // quad(faceX[0], faceY[0], faceX[1], faceY[1], faceX[2], faceY[2], faceX[3], faceY[3]);
   
     //Face Scales
     scaleBrightness = 60;
