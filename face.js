@@ -143,12 +143,16 @@ function Face() {
     scale(0.3, 0.3);
     // // Positional Variables
     let XPos = 0;
-    let YPos = 0;
+    let YPos = segment_average(positions.chin)[1] - 3;
     // console.log(positions.nose_tip[0]);
 
     let jawDrop = (segment_average(positions.bottom_lip)[1] - segment_average(positions.top_lip)[1]) * 10;
 
-    let sideTilt = (positions.chin[8])[0];
+    if((positions.chin[8])[0] >= 0) {
+      sideTilt = (positions.chin[5])[0];
+    } else {
+      sideTilt = (positions.chin[13])[0];
+    }
     let cOffset = sideTilt;
     
     //Draw Hydra Face
@@ -202,6 +206,35 @@ function Face() {
 
     this.draw_segment(positions.chin);
 
+    let left_eye_pos = segment_average(positions.left_eye);
+    let right_eye_pos = segment_average(positions.right_eye);
+    this.num_eyes = 2;
+        // eyes
+        noStroke();
+        let curEyeShift = 0.04 * this.eye_shift;
+        if(this.num_eyes == 2) {
+          // fill(this.detailColour);
+          // ellipse(left_eye_pos[0], left_eye_pos[1] + 0.3, 0.5, 0.33);
+          // ellipse(right_eye_pos[0], right_eye_pos[1] + 0.3, 0.5, 0.33);
+    
+          // fill(this.mainColour);
+          // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
+          // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
+        }
+        else {
+          let eyePosX = (left_eye_pos[0] + right_eye_pos[0]) / 2;
+          let eyePosY = (left_eye_pos[1] + right_eye_pos[1]) / 2;
+    
+          // fill(this.detailColour);
+          ellipse(eyePosX, eyePosY, 0.45, 0.27);
+    
+          // fill(this.mainColour);
+          ellipse(eyePosX - 0.1 + curEyeShift, eyePosY, 0.18);
+        }
+       // fill(0)
+       //ellipse(0,0, 0.5,0.5) center point
+       //rect(-2,-2,4.5,4) sizing debug 
+      
 
     // mouth
     // fill(this.detailColour);
