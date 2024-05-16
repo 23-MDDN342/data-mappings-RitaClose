@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 6;
@@ -149,11 +149,14 @@ function Face() {
     let jawDrop = (segment_average(positions.bottom_lip)[1] - segment_average(positions.top_lip)[1]) * 10;
 
     if((positions.chin[8])[0] >= 0) {
-      sideTilt = (positions.chin[5])[0];
+      // sideTilt = (positions.chin[5])[0];
     } else {
-      sideTilt = (positions.chin[13])[0];
+      // sideTilt = (positions.chin[13])[0];
     }
+    let sideTilt = (segment_average(positions.nose_bridge)[0]);
     let cOffset = sideTilt;
+    console.log(sideTilt);
+
     
     //Draw Hydra Face
     if (sideTilt >= 0) { //LeftSide on Top
@@ -365,14 +368,14 @@ function Face() {
         let band2cX = [XPos - 4 - lOffset * 2, XPos - 3 - lOffset * 7.5, XPos - 3 - lOffset * 6, XPos - 3 - lOffset * 1.5];
         let band2cY = [YPos + 5, YPos + 3, YPos + 7, YPos + 8];
         quad(band2cX[0], band2cY[0], band2cX[1], band2cY[1], band2cX[2], band2cY[2], band2cX[3], band2cY[3]);
-        DrawScales(true, 7 + (cOffset / 2), 5, band2cX, band2cY, baseColour, scaleBrightness, scaleStrokeBrightness);
+        // DrawScales(true, 7 + (cOffset / 2), 5, band2cX, band2cY, baseColour, scaleBrightness, scaleStrokeBrightness);
         //Middle Quad
         scaleBrightness = 35;
         scaleStrokeBrightness = 20;
         let band2bX = [XPos - 6 - lOffset * 0.4, XPos - 4 - lOffset * 5.5, XPos - 3 - lOffset * 7.5, XPos - 4 - lOffset * 2];
         let band2bY = [YPos - 3, YPos - 2, YPos + 3, YPos + 5];
         quad(band2bX[0], band2bY[0], band2bX[1], band2bY[1], band2bX[2], band2bY[2], band2bX[3], band2bY[3]);
-        DrawScales(true, 5 + (cOffset / 2), 12, band2bX, band2bY, baseColour, scaleBrightness, scaleStrokeBrightness);
+        // DrawScales(true, 5 + (cOffset / 2), 12, band2bX, band2bY, baseColour, scaleBrightness, scaleStrokeBrightness);
         //Top Quad
         fill(baseColour, 100, 40);
         scaleBrightness = 45;
@@ -380,7 +383,7 @@ function Face() {
         let band2aX = [XPos - 4 - lOffset * 3.5, XPos - 4 - lOffset * 5, XPos - 4 - lOffset * 5.5, XPos - 6 - lOffset * 0.4];
         let band2aY = [YPos - 5, YPos - 3, YPos - 2, YPos - 3];
         quad(band2aX[0], band2aY[0], band2aX[1], band2aY[1], band2aX[2], band2aY[2], band2aX[3], band2aY[3]);
-        DrawScales(true, 4 + (cOffset / 2), 3, band2aX, band2aY, baseColour, scaleBrightness, scaleStrokeBrightness);
+        // DrawScales(true, 4 + (cOffset / 2), 3, band2aX, band2aY, baseColour, scaleBrightness, scaleStrokeBrightness);
 
       //First Band
         //Bottom Quad
@@ -389,21 +392,21 @@ function Face() {
         let band1cX = [XPos - 4 + lOffset, XPos - 4 - lOffset * 2, XPos - 3 - lOffset * 1.5, XPos - 3 + lOffset];
         let band1cY = [YPos + 5, YPos + 5, YPos + 8, YPos + 7];
         quad(band1cX[0], band1cY[0], band1cX[1], band1cY[1], band1cX[2], band1cY[2], band1cX[3], band1cY[3]);
-        DrawScales(true, 4 + (cOffset / 4), 5, band1cX, band1cY, baseColour, scaleBrightness, scaleStrokeBrightness);
+        // DrawScales(true, 4 + (cOffset / 4), 5, band1cX, band1cY, baseColour, scaleBrightness, scaleStrokeBrightness);
         //Middle Quad
         scaleBrightness = 45;
         scaleStrokeBrightness = 30;
         let band1bX = [XPos - 6 + lOffset, XPos - 6 - lOffset * 0.4, XPos - 4 - lOffset * 2, XPos - 4 + lOffset];
         let band1bY = [YPos - 3, YPos - 3, YPos + 5, YPos + 5];
         quad(band1bX[0], band1bY[0], band1bX[1], band1bY[1], band1bX[2], band1bY[2], band1bX[3], band1bY[3]);
-        DrawScales(true, 4 + (cOffset / 6), 14, band1bX, band1bY, baseColour, scaleBrightness, scaleStrokeBrightness);
+        // DrawScales(true, 4 + (cOffset / 6), 14, band1bX, band1bY, baseColour, scaleBrightness, scaleStrokeBrightness);
         //Top Quad
         scaleBrightness = 55;
         scaleStrokeBrightness = 40;
         let band1aX = [XPos - 4 + lOffset, XPos - 4 - lOffset * 3.5, XPos - 6 - lOffset * 0.4, XPos - 6 + lOffset];
         let band1aY = [YPos - 5.5, YPos - 5, YPos - 3, YPos - 3];
         quad(band1aX[0], band1aY[0], band1aX[1], band1aY[1], band1aX[2], band1aY[2], band1aX[3], band1aY[3]);
-        DrawScales(true, 5 + (cOffset / 4), 4, band1aX, band1aY, baseColour, scaleBrightness, scaleStrokeBrightness);
+        // DrawScales(true, 5 + (cOffset / 4), 4, band1aX, band1aY, baseColour, scaleBrightness, scaleStrokeBrightness);
     }
     
     //Face Points
@@ -624,9 +627,9 @@ function Face() {
         vertex(XPos, YPos);
       endShape(CLOSE);
     }
-    
+                    //-0.39
     //Neck
-    if(cOffset <=0) {
+    // if(cOffset <=0) {
       //Second Band
         //Bottom Quad
         fill(baseColour, 100, 10);
@@ -674,7 +677,7 @@ function Face() {
         let band1aY = [YPos - 5.5, YPos - 5, YPos - 3, YPos - 3];
         quad(band1aX[0], band1aY[0], band1aX[1], band1aY[1], band1aX[2], band1aY[2], band1aX[3], band1aY[3]);
         DrawScales(false, 5 + (cOffset / -4), 4, band1aX, band1aY, baseColour, scaleBrightness, scaleStrokeBrightness);
-    }
+    // }
   
     //Face Points
     let faceX = [XPos + (crOffset * 1.05), XPos + 6 + rOffset, XPos + 4 + rOffset, XPos + 3 + crOffset];
