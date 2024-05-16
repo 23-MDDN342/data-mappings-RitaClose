@@ -8,3 +8,5 @@ This README should be used to document your design.
 
 15/05
 I am not a fan so far. Object Oriented coding is difficult and I don't entirely understand it. So far I have imported my characters face into the new code framework but the variables aren't working right so far so I need to tinker a bit to make them better. Also I need to re-orient all of the measurements so that they follow the faces from the AI instead of keeping the same all the time.
+
+https://23-mddn342.github.io/data-mappings-RitaClose/ 

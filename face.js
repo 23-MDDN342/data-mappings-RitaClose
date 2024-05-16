@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = false;
+var DEBUG_MODE = true;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 6;
@@ -153,7 +153,7 @@ function Face() {
     } else {
       // sideTilt = (positions.chin[13])[0];
     }
-    let sideTilt = (segment_average(positions.nose_bridge)[0]);
+    let sideTilt = (segment_average(positions.nose_bridge)[0]) * 20;
     let cOffset = sideTilt;
     console.log(sideTilt);
 
