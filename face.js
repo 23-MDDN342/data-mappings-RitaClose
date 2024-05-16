@@ -39,37 +39,37 @@ this.yDip = 0;
 
 //List Var
 
-this.band1aX = [];
-this.band1aY = [];
-this.band1bX = [];
-this.band1bY = [];
-this.band1cX = [];
-this.band1cX = [];
-this.band1cY = [];
+// this.band1aX = [];
+// this.band1aY = [];
+// this.band1bX = [];
+// this.band1bY = [];
+// this.band1cX = [];
+// this.band1cX = [];
+// this.band1cY = [];
 
-this.band2aX = [];
-this.band2aY = [];
-this.band2bX = [];
-this.band2bY = [];
-this.band2cX = [];
-this.band2cX = [];
-this.band2cY = [];
+// this.band2aX = [];
+// this.band2aY = [];
+// this.band2bX = [];
+// this.band2bY = [];
+// this.band2cX = [];
+// this.band2cX = [];
+// this.band2cY = [];
 
-this.noseBridgeX = [];
-this.noseBridgeY = [];
-this.noseX = [];
-this.noseY = [];
-this.forredX = [];
-this.forredY = [];
-this.faceX = [];
-this.faceY = [];
-this.mouthX = [];
-this.mouthY = [];
-this.jawX = [];
-this.jawY = [];
-this.teethNo;
-this.teethRowPtX = [];
-this.teethRowPtY = [];
+// this.noseBridgeX = [];
+// this.noseBridgeY = [];
+// this.noseX = [];
+// this.noseY = [];
+// this.forredX = [];
+// this.forredY = [];
+// this.faceX = [];
+// this.faceY = [];
+// this.mouthX = [];
+// this.mouthY = [];
+// this.jawX = [];
+// this.jawY = [];
+// this.teethNo;
+// this.teethRowPtX = [];
+// this.teethRowPtY = [];
 
 
 
@@ -103,29 +103,29 @@ function Face() {
   // this.eyebrowColour = [119, 85, 17];
 
   // Positional Variables
-  this.XPos = 0;
-  this.YPos = -0.5;
+  let XPos = 0;
+  let YPos = -0.5;
 
   // FaceDraw Variables
-  this.sideTilt = 0; // -10, 10
-  this.jawDrop = 0; // 1, 3
-  this.eyeTilt = 0; // -0.5, 0.5
-  this.smoke = 0; // true/false
-  this.baseColour = 124; // 0, 360
-  this.eyeColour = 46; // 0, 360
+  let sideTilt = 0; // -10, 10
+  let jawDrop = 0; // 1, 3
+  let eyeTilt = 0; // -0.5, 0.5
+  let smoke = 0; // true/false
+  let baseColour = 124; // 0, 360
+  let eyeColour = 46; // 0, 360
 
   // this.tilt = this.sideTilt;
 
   //Tilt Offset Variables Setup
-  this.lOffset = 0; // Left Offset
-  this.cOffset = this.sideTilt; // Central Offset
-  this.rOffset = 0; //Right Offset
+  let lOffset = 0; // Left Offset
+  let cOffset = this.sideTilt; // Central Offset
+  let rOffset = 0; //Right Offset
 
-  this.clOffset = 0; // Left Central
-  this.crOffset = 0; // Right Central
+  let clOffset = 0; // Left Central
+  let crOffset = 0; // Right Central
 
   //Perspective Dip: Y Axis
-  this.yDip = 0;
+  let yDip = 0;
 
   angleMode(DEGREES);
   colorMode(HSB);
@@ -142,36 +142,65 @@ function Face() {
     push();
     scale(0.3, 0.3);
     // // Positional Variables
-    this.XPos = 0;
-    this.YPos = -0.5;
-    console.log(positions.nose_tip[0]);
+    let XPos = 0;
+    let YPos = 0;
+    // console.log(positions.nose_tip[0]);
 
-    this.sideTilt = 0;
-    this.cOffset = this.sideTilt;
+    let jawDrop = (segment_average(positions.bottom_lip)[1] - segment_average(positions.top_lip)[1]) * 10;
+
+    let sideTilt = (positions.chin[8])[0];
+    let cOffset = sideTilt;
     
     //Draw Hydra Face
-    if (this.sideTilt > 0) { //LeftSide on Top
-      lOffset = this.sideTilt * 0.1;
-      rOffset = this.sideTilt * -0.75;
-      clOffset = this.sideTilt * 0.75;
-      crOffset = this.sideTilt * 0.5;
-      yDip = this.sideTilt * 0.1;
+    if (sideTilt >= 0) { //LeftSide on Top
+      // lOffset = sideTilt * 0.1;
+      // rOffset = sideTilt * -0.75;
+      let rOffset = (positions.chin[16])[0] * -0.75;
+      let lOffset = (positions.chin[0])[0] * 0.1;
+      clOffset = sideTilt * 0.75;
+      crOffset = sideTilt * 0.5;
+      yDip = sideTilt * 0.1;
 
-      this.rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
-      this.leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+
+      noStroke();
+      fill(300, 100, 100);
+      circle(cOffset, 0, 2);
+      circle(clOffset, 1, 2);
+      circle(crOffset, 2, 2);
+      textSize(1);
+      text('Facing Left', 0, -12);
 
     } else { // Right Side on Top
-      lOffset = this.sideTilt * -0.7
-      rOffset = this.sideTilt * 0.1;
-      clOffset = this.sideTilt * 0.5;
-      crOffset = this.sideTilt * 0.75;
-      yDip = (this.sideTilt * -1) * 0.1;
+      // lOffset = sideTilt * -0.7
+      // rOffset = sideTilt * 0.1;
+      let rOffset = (positions.chin[16])[0] * 0.1;
+      let lOffset = (positions.chin[0])[0] * -0.7;
+      clOffset = sideTilt * 0.5;
+      crOffset = sideTilt * 0.75;
+      yDip = (sideTilt * -1) * 0.1;
 
-      this.leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
-      this.rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+    
+      noStroke();
+      fill(200, 100, 100);
+      circle(cOffset, 0, 2);
+      circle(clOffset, 1, 2);
+      circle(crOffset, 2, 2);
+      textSize(1);
+      text('Facing Right', 0, -12);
+
     }
     pop();
     // head
+
+    fill(255, 100, 100);
+    // ellipse(chinPt, positions.chin[0][0], 0.5);
+    // ellipse(segment_average(positions.chin)[0], 0, 3, 4);
+
+    this.draw_segment(positions.chin);
 
 
     // mouth
@@ -269,8 +298,7 @@ function Face() {
     return settings;
   }
 
-  
-  this.leftFace = function(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke) {
+  function leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke) {
     let scaleBrightness;
     let scaleStrokeBrightness;
 
@@ -539,7 +567,7 @@ function Face() {
     line(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 3.5 - (clOffset * 0.4), YPos -  10 + (yDip * -1));  
   }
 
-  this.rightFace = function(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke) {
+  function rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke) {
     let scaleBrightness;
     let scaleStrokeBrightness;
   
