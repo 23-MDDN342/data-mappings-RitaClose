@@ -24,5 +24,11 @@ eyeTilt = Degree of eyebrow raise
 
 base(face)Colour = Hair Colour
 eyeColour = eyeColour
-Horns(true) = Wearing a Hat
 
+Hair Length for Horns 
+Scale Type for Masculine/Feminine
+
+Draw Eyes with Specific Points
+- age for a variable? eye colour?
+
+- change shape on neck
