@@ -13,3 +13,16 @@ https://23-mddn342.github.io/data-mappings-RitaClose/
 
 16/05
 Today I got the tilt and the jaw drop to work, I am going to do the eyes and fix the neck before I move on to training the system then adding in some of the conditional variables and attributes.
+
+21/05/2024
+
+Below are the variables I have so far, they may change, especially the eyes because I think it's actually quite difficult to determine eye colour from the training photos and everyone's eyes just look brown. I chose to do the colour of the face based on hair colour, I was thinking about doing it based on the colour of their shirt but quite a few of the photos you can't see what colour it is. I have added the neck back in because the head just looks like it's floating weirdly if it's not there. The training I've done so far is only about 20 people so that's next on the list I think.
+
+sideTilt = Horizontal tilt of face
+jawDrop = How much the mouth is open
+eyeTilt = Degree of eyebrow raise
+
+base(face)Colour = Hair Colour
+eyeColour = eyeColour
+Horns(true) = Wearing a Hat
+

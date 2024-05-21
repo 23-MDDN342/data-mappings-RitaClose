@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = false;
+var DEBUG_MODE = true;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 6;
@@ -22,6 +22,8 @@ this.jawDrop = 0; // 1, 3
 this.eyeTilt = 0; // -0.5, 0.5
 this.smoke = 0; // true/false
 this.baseColour = 124; // 0, 360
+this.baseHue = 100;
+this.eyeHue = 46;
 this.eyeColour = 46; // 0, 360
 
 // this.tilt = this.sideTilt;
@@ -85,22 +87,16 @@ function segment_average(segment) {
     sum_x = sum_x + segment[i][0];
     sum_y = sum_y + segment[i][1];
   }
-  return [sum_x / s_len , sum_y / s_len ];
+  return [sum_x / s_len , sum_y / s_len];
 }
 
 // This where you define your own face object
 function Face() {
   // these are state variables for a face
-  // (your variables should be different!)
-  // this.detailColour = [204, 136, 17];
-  // this.mainColour = [51, 119, 153];
-  // this.num_eyes = 2;    // can be either 1 (cyclops) or 2 (two eyes)
-  // this.eye_shift = -1;   // range is -10 to 10
-  // this.mouth_size = 1;  // range is 0.5 to 8
 
-  // this.chinColour = [153, 153, 51];
-  // this.lipColour = [136, 68, 68];
-  // this.eyebrowColour = [119, 85, 17];
+  this.horns = 1;
+  this.eyeHue = 46;
+  this.baseHue = 100;
 
   // Positional Variables
   let XPos = 0;
@@ -130,8 +126,6 @@ function Face() {
   angleMode(DEGREES);
   colorMode(HSB);
 
-
-
   /*
    * Draw the face with position lists that include:
    *    chin, right_eye, left_eye, right_eyebrow, left_eyebrow
@@ -144,19 +138,143 @@ function Face() {
     // // Positional Variables
     let XPos = 0;
     let YPos = segment_average(positions.chin)[1] - 3;
-    // console.log(positions.nose_tip[0]);
 
     let jawDrop = (segment_average(positions.bottom_lip)[1] - segment_average(positions.top_lip)[1]) * 10;
+    let eyeTilt = (segment_average(positions.left_eye)[1] - segment_average(positions.left_eyebrow)[1]) / 2;
 
-    if((positions.chin[8])[0] >= 0) {
-      // sideTilt = (positions.chin[5])[0];
-    } else {
-      // sideTilt = (positions.chin[13])[0];
-    }
     let sideTilt = (segment_average(positions.nose_bridge)[0]) * 20;
     let cOffset = sideTilt;
 
+    let leftEyePos = segment_average(positions.left_eye)[0];
+    let rightEyePos = segment_average(positions.right_eye)[0];
+
+    let noseFlare = (segment_average(positions.top_lip)[1] - segment_average(positions.nose_tip)[1]);
     
+    let horns = this.horns;
+    let eyeColour = this.eyeHue;
+    let baseColour = this.baseHue;
+
+    //HYDRA NECK
+    push();
+    scale(0.1);
+
+    noFill();
+    noStroke();
+    //Neck Bezier Points
+    let bX1 = XPos - sideTilt,
+    bX2 = XPos - sideTilt * 60,
+    bX3 = width / 2 + random(-100, 100),
+    bX4 = width / 2;
+
+    let bY1 = YPos - 50,
+    bY2 = YPos - 5,
+    bY3 = height + random(-30, 30),
+    bY4 = height;
+
+    // //Beheaded Neck Ending Angle
+    // let tilt;
+    // if(bX2 > (bX1 + 50)) {
+    //   tilt = -90;
+    // } else if (bX2 > (bX1 + 10)) {
+    //   tilt = -40;
+    // } else if (bX2 < (bX1 - 50)){
+    //   tilt = 90;
+    // } else if (bX2 < (bX1 - 10)) {
+    //   tilt = 40;
+    // } else {
+    //   tilt =  0;
+    // }
+
+    //Draw Neck
+    colorMode(HSB);
+    strokeCap(SQUARE);
+    let steps = 200;
+
+    //Base Line
+    stroke(baseColour, 100, 20);
+    strokeWeight(100);
+    bezier(bX1, bY1 + 40, bX2, bY2 + 40, bX3, bY3 + 40, bX4, bY4 + 40);
+
+    //NeckLine 1
+    stroke(baseColour, 100, 60);
+    strokeWeight(5);
+    bezier(bX1, bY1 - 5, bX2, bY2 - 5, bX3, bY3 - 5, bX4, bY4 - 5);
+    strokeWeight(1);
+    for(i = steps; i >= 0; i --) { // Scales
+      let t = i / steps;
+      let neckX = bezierPoint(bX1, bX2, bX3, bX4, t);
+      let neckY = bezierPoint(bY1, bY2, bY3, bY4, t);
+      stroke(baseColour + (i / 5), 100, 80 - (i / 4));
+      fill(baseColour + (i / 3), 100, 60 - (i / 15));
+      if(i %2 == 1) {
+        circle(neckX, neckY, 15);
+      } else {
+        circle(neckX, neckY + 10, 15);
+      }
+    }
+    //Neck Line 2
+    noFill();
+    stroke(baseColour, 100, 40);
+    strokeWeight(30);
+    bezier(bX1, bY1, bX2, bY2, bX3, bY3, bX4, bY4);
+    strokeWeight(1);
+    for(i = steps; i >= 0; i --) { // Scales
+      let t = i / steps;
+      let neckX = bezierPoint(bX1, bX2, bX3, bX4, t);
+      let neckY = bezierPoint(bY1, bY2, bY3, bY4, t);
+      fill(baseColour + (i / 3), 100, 40 - (i / 15));
+      stroke(baseColour + (i / 5), 100, 60 - (i / 4));
+      if(i %2 == 1) {
+        circle(neckX, neckY, 15);
+        circle(neckX, neckY + 10, 15);
+      } else {
+        circle(neckX, neckY + 20, 15);
+        circle(neckX, neckY + 30, 15);
+      }
+    }
+    //Neck Line 3
+    noFill();
+    stroke(baseColour, 100, 30);
+    strokeWeight(50);
+    bezier(bX1, bY1 + 40, bX2, bY2 + 40, bX3, bY3 + 40, bX4, bY4 + 40);
+    strokeWeight(1);
+    for(i = steps; i >= 0; i --) { // Scales
+      let t = i / steps;
+      let neckX = bezierPoint(bX1, bX2, bX3, bX4, t);
+      let neckY = bezierPoint(bY1, bY2, bY3, bY4, t);
+      fill(baseColour + (i / 3), 100, 30 - (i / 15));
+      stroke(baseColour + (i / 5), 100, 50 - (i / 4));
+      if(i %2 == 1) {
+        circle(neckX, neckY + 20, 15);
+        circle(neckX, neckY + 30, 15);
+        circle(neckX, neckY + 40, 15);
+      } else {
+        circle(neckX, neckY + 50, 15);
+        circle(neckX, neckY + 60, 15);
+      }
+    }
+    //Neck Line 4
+    noFill();
+    stroke(baseColour, 100, 20);
+    strokeWeight(40);
+    bezier(bX1, bY1 + 70, bX2, bY2 + 70, bX3, bY3 + 70, bX4, bY4 + 70);
+    strokeWeight(1);
+    for(i = steps; i >= 0; i --) { // Scales
+      let t = i / steps;
+      let neckX = bezierPoint(bX1, bX2, bX3, bX4, t);
+      let neckY = bezierPoint(bY1, bY2, bY3, bY4, t);
+      fill(baseColour + (i / 3), 100, 20 - (i / 15));
+      stroke(baseColour + (i / 5), 100, 40 - (i / 4));
+      if(i %2 == 1) {
+        circle(neckX, neckY + 50, 15);
+        circle(neckX, neckY + 60, 15);
+      } else {
+        circle(neckX, neckY + 70, 15);
+        circle(neckX, neckY + 80, 15);
+      }
+    }
+    pop();
+
     //Draw Hydra Face
     if (sideTilt >= 0) { //LeftSide on Top
       // lOffset = sideTilt * 0.1;
@@ -167,8 +285,8 @@ function Face() {
       crOffset = sideTilt * 0.5;
       yDip = sideTilt * 0.1;
 
-      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
-      // leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, rightEyePos, noseFlare, smoke, horns);
+      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns);
 
       noStroke();
       fill(300, 100, 100);
@@ -187,8 +305,8 @@ function Face() {
       crOffset = sideTilt * 0.75;
       yDip = (sideTilt * -1) * 0.1;
 
-      // leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
-      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke);
+      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns);
+      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, rightEyePos, noseFlare, smoke, horns);
     
       noStroke();
       fill(200, 100, 100);
@@ -197,6 +315,23 @@ function Face() {
       circle(crOffset, 2, 2);
       textSize(1);
       text('Facing Right', 0, -12);
+
+      //Draw Conditional Smoke
+      colorMode(RGB);
+      fill(255, 50);
+      noStroke();
+      blendMode(SOFT_LIGHT);
+      if(jawDrop > 2) { // Jaw Open?
+        for(i = 0; i < 50; i ++) {
+          if(cOffset >= 0) {
+            circle(XPos + random(-2, 2) + (i/4) + cOffset, YPos + 6 + random(-3, 5) + (i / 10), random(0.5, 4));
+          } else {
+            circle(XPos - random(-2, 2) - (i/4) + cOffset, YPos + 6 + random(-3, 5) + (i / 10), random(0.5, 4));
+          }
+        }
+      }
+      blendMode(BLEND);
+    
 
     }
     pop();
@@ -208,87 +343,7 @@ function Face() {
 
     this.draw_segment(positions.chin);
 
-    let left_eye_pos = segment_average(positions.left_eye);
-    let right_eye_pos = segment_average(positions.right_eye);
-    this.num_eyes = 2;
-        // eyes
-        noStroke();
-        let curEyeShift = 0.04 * this.eye_shift;
-        if(this.num_eyes == 2) {
-          // fill(this.detailColour);
-          // ellipse(left_eye_pos[0], left_eye_pos[1] + 0.3, 0.5, 0.33);
-          // ellipse(right_eye_pos[0], right_eye_pos[1] + 0.3, 0.5, 0.33);
-    
-          // fill(this.mainColour);
-          // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
-          // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
-        }
-        else {
-          let eyePosX = (left_eye_pos[0] + right_eye_pos[0]) / 2;
-          let eyePosY = (left_eye_pos[1] + right_eye_pos[1]) / 2;
-    
-          // fill(this.detailColour);
-          ellipse(eyePosX, eyePosY, 0.45, 0.27);
-    
-          // fill(this.mainColour);
-          ellipse(eyePosX - 0.1 + curEyeShift, eyePosY, 0.18);
-        }
-       // fill(0)
-       //ellipse(0,0, 0.5,0.5) center point
-       //rect(-2,-2,4.5,4) sizing debug 
-      
 
-    // mouth
-    // fill(this.detailColour);
-    // ellipse(segment_average(positions.bottom_lip)[0], segment_average(positions.bottom_lip)[1], 1.36, 0.25 * this.mouth_size);
-
-    // eyebrows
-    // stroke( this.eyebrowColour);
-    // strokeWeight(0.08);
-    // this.draw_segment(positions.left_eyebrow);
-    // this.draw_segment(positions.right_eyebrow);
-
-    // // draw the chin segment using points
-    // stroke(this.chinColour);
-    // this.draw_segment(positions.chin);
-
-    // stroke(100, 0, 100);
-    // this.draw_segment(positions.nose_bridge);
-    // this.draw_segment(positions.nose_tip);
-
-    // strokeWeight(0.03);
-    // stroke(this.lipColour);
-    // this.draw_segment(positions.top_lip);
-    // this.draw_segment(positions.bottom_lip);
-
-    // let left_eye_pos = segment_average(positions.left_eye);
-    // let right_eye_pos = segment_average(positions.right_eye);
-
-    // // eyes
-    // noStroke();
-    // let curEyeShift = 0.04 * this.eye_shift;
-    // if(this.num_eyes == 2) {
-    //   fill(this.detailColour);
-    //   ellipse(left_eye_pos[0], left_eye_pos[1], 0.5, 0.33);
-    //   ellipse(right_eye_pos[0], right_eye_pos[1], 0.5, 0.33);
-
-    //   // fill(this.mainColour);
-    //   // ellipse(left_eye_pos[0] + curEyeShift, left_eye_pos[1], 0.18);
-    //   // ellipse(right_eye_pos[0] + curEyeShift, right_eye_pos[1], 0.18);
-    // }
-    // else {
-    //   let eyePosX = (left_eye_pos[0] + right_eye_pos[0]) / 2;
-    //   let eyePosY = (left_eye_pos[1] + right_eye_pos[1]) / 2;
-
-    //   fill(this.detailColour);
-    //   ellipse(eyePosX, eyePosY, 0.45, 0.27);
-
-    //   fill(this.mainColour);
-    //   ellipse(eyePosX - 0.1 + curEyeShift, eyePosY, 0.18);
-    // }
-   // fill(0)
-   //ellipse(0,0, 0.5,0.5) center point
-   //rect(-2,-2,4.5,4) sizing debug 
   }
 
   // example of a function *inside* the face object.
@@ -313,27 +368,35 @@ function Face() {
 
   /* set internal properties based on list numbers 0-100 */
   this.setProperties = function(settings) {
-    this.sideTilt = map(settings[0], 0, 100, -10, 10);
-    this.jawDrop = map(settings[1], 0, 100, 1, 3);
-    this.eyeTilt = map(settings[2], 0, 100, -0.5, 0.5);
-    this.smoke = int(map(settings[3], 0, 100, 0, 1));
-    this.baseColour = map(settings[4], 0, 100, 0, 360);
-    this.eyeColour = map(settings[5], 0, 100, 0, 360);
+    this.horns = map(settings[0], 0, 100, 0, 1);
+    this.eyeHue = map(settings[1], 0, 100, 15, 80);
+    this.baseHue = map(settings[2], 0, 100, 20, 300);
+
+    // this.sideTilt = map(settings[0], 0, 100, -10, 10);
+    // this.jawDrop = map(settings[1], 0, 100, 1, 3);
+    // this.eyeTilt = map(settings[2], 0, 100, -0.5, 0.5);
+    // this.smoke = int(map(settings[3], 0, 100, 0, 1));
+    // this.baseColour = map(settings[4], 0, 100, 0, 360);
+    // this.eyeColour = map(settings[5], 0, 100, 0, 360);
   }
 
   /* get internal properties as list of numbers 0-100 */
   this.getProperties = function() {
-    let settings = new Array(6);
-    settings[0] = map(this.sideTilt, -10, 10, 0, 100);
-    settings[1] = map(this.jawDrop, 1, 3, 0, 100);
-    settings[2] = map(this.eyeTilt, -0.5, 0.5, 0, 100);
-    settings[3] = map(this.smoke, 0, 1, 0, 100);
-    settings[4] = map(this.baseColour, 0, 360, 0, 100);
-    settings[5] = map(this.eyeColourColour, 0, 360, 0, 100);
+    let settings = new Array(3);
+    settings[0] = map(this.horns, 0, 1, 0, 100);
+    settings[1] = map(this.eyeHue, 15, 80, 0, 100);
+    settings[2] = map(this.baseHue, 20, 300, 0, 100);
+
+    // settings[0] = map(this.sideTilt, -10, 10, 0, 100);
+    // settings[1] = map(this.jawDrop, 1, 3, 0, 100);
+    // settings[2] = map(this.eyeTilt, -0.5, 0.5, 0, 100);
+    // settings[3] = map(this.smoke, 0, 1, 0, 100);
+    // settings[4] = map(this.baseColour, 0, 360, 0, 100);
+    // settings[5] = map(this.eyeColourColour, 0, 360, 0, 100);
     return settings;
   }
 
-  function leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke) {
+  function leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns) {
     let scaleBrightness;
     let scaleStrokeBrightness;
 
@@ -470,33 +533,33 @@ function Face() {
     if(clOffset >= 0) { //Side Facing Eye
       //UpperEyelid
       fill(eyeColour, 100, 90);
-      curve(XPos - 5 + clOffset / 2 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, XPos - 2 + clOffset / 2, YPos + 0.5 + eyeTilt, XPos - 4 + clOffset * 0.1, YPos -0.5 - eyeTilt, XPos + 2 - clOffset / 4 + eyeTilt * 4, YPos - 10);
+      curve(leftEyePos - 5 + clOffset / 2 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, leftEyePos - 2 + clOffset / 2, YPos + 0.5 + eyeTilt, leftEyePos - 4 + clOffset * 0.1, YPos -0.5 - eyeTilt, leftEyePos + 2 - clOffset / 4 + eyeTilt * 4, YPos - 10);
       // Iris
       fill(eyeColour + 10, 100, 100);
       noStroke(); 
-      ellipse(XPos - 3 + clOffset * 0.3 + cOffset / 12, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3);
+      ellipse(leftEyePos - 3 + clOffset * 0.3 + cOffset / 12, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3);
       // Pupil
       fill(baseColour, 100, 0);
-      ellipse(XPos - 3 + clOffset * 0.3 + cOffset / 10, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
+      ellipse(leftEyePos - 3 + clOffset * 0.3 + cOffset / 10, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
       //LowerEyelid
       stroke(baseColour, 100, 20);
       fill(baseColour, 100, 20);
-      curve(XPos - 1 + clOffset / 2, YPos + 2 + yDip * 6 + eyeTilt, XPos - 2 + clOffset / 2, YPos + 0.5 + eyeTilt, XPos - 4 + clOffset * 0.1, YPos - 0.5 - eyeTilt, XPos + 2 * clOffset / 2, YPos + 2 - eyeTilt);
+      curve(leftEyePos - 1 + clOffset / 2, YPos + 2 + yDip * 6 + eyeTilt, leftEyePos - 2 + clOffset / 2, YPos + 0.5 + eyeTilt, leftEyePos - 4 + clOffset * 0.1, YPos - 0.5 - eyeTilt, leftEyePos + 2 * clOffset / 2, YPos + 2 - eyeTilt);
     } else {
       //UpperEyelid
       fill(eyeColour, 100, 90);
-      curve(XPos - 5 + clOffset * 0.1 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, XPos - 2 + clOffset * 0.1, YPos + 0.5 + eyeTilt, XPos - 4 - clOffset, YPos -0.5 - eyeTilt, XPos + 2 - clOffset + eyeTilt * 4, YPos - 10);
+      curve(leftEyePos - 5 + clOffset * 0.1 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, leftEyePos - 2 + clOffset * 0.1, YPos + 0.5 + eyeTilt, leftEyePos - 4 - clOffset, YPos -0.5 - eyeTilt, leftEyePos + 2 - clOffset + eyeTilt * 4, YPos - 10);
       //Iris
       fill(eyeColour + 10, 100, 100);
       noStroke();
-      ellipse(XPos - 3 - clOffset * 0.3, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3 + cOffset / 10, 1 - eyeTilt / 3);
+      ellipse(leftEyePos - 3 - clOffset * 0.3, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3 + cOffset / 10, 1 - eyeTilt / 3);
       //Pupil
       fill(baseColour, 100, 5);
-      ellipse(XPos - 3 - clOffset * 0.3 + cOffset * 0.05, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
+      ellipse(leftEyePos - 3 - clOffset * 0.3 + cOffset * 0.05, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
       //LowerEyelid
       stroke(baseColour, 100, 20);
       fill(baseColour, 100, 20);
-      curve(XPos - 1 + clOffset * 0.1, YPos + 2 + yDip * 6 + eyeTilt, XPos - 2 + clOffset * 0.1, YPos + 0.5 + eyeTilt, XPos - 4 - clOffset, YPos - 0.5 - eyeTilt, XPos - 2 * clOffset, YPos + 2 - eyeTilt);
+      curve(leftEyePos - 1 + clOffset * 0.1, YPos + 2 + yDip * 6 + eyeTilt, leftEyePos - 2 + clOffset * 0.1, YPos + 0.5 + eyeTilt, leftEyePos - 4 - clOffset, YPos - 0.5 - eyeTilt, leftEyePos - 2 * clOffset, YPos + 2 - eyeTilt);
     }
     
     //NoseBridge
@@ -545,11 +608,7 @@ function Face() {
 
     //Nostrils
     fill(baseColour, 100, 30);
-    if(smoke && jawDrop > 1) { // Nostril Flare for Smoke
-      quad(XPos - 0.5 + (cOffset * 0.8), YPos + 5.25, XPos - 2 + clOffset, YPos + 4.5, XPos - 2 + clOffset, YPos + 5.5, XPos - 0.5 + (cOffset * 0.8), YPos + 5.6);
-    } else {
-      quad(XPos - 0.5 + (cOffset * 0.8), YPos + 5.25, XPos - 2 + clOffset, YPos + 4.5, XPos - 2 + clOffset, YPos + 5, XPos - 0.5 + (cOffset * 0.8), YPos + 5.5);
-    }
+    quad(XPos - 0.5 + (cOffset * 0.8), YPos + 5.25, XPos - 2 + clOffset, noseFlare + 2, XPos - 2 + clOffset, noseFlare + 2.5, XPos - 0.5 + (cOffset * 0.8), YPos + 6);
 
     //Mouth
     fill(baseColour, 100, 85);
@@ -594,15 +653,17 @@ function Face() {
     triangle(XPos + (clOffset * 0.4), YPos - 5 + (yDip * 1.5), XPos + lOffset - 4, YPos - 5.5, XPos + rOffset + 4, YPos - 5.5);
     
     //Horns
-    fill(baseColour + 20, 100, 90);
-    triangle(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 4 - (clOffset * 0.05), YPos -  3 + (yDip * -0.5), XPos - 3.5 - (clOffset * 0.4), YPos -  10 + (yDip * -1));
-    fill(baseColour + 6, 100, 50);
-    triangle(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 1.5 + (clOffset * 0.05), YPos -  2.8 + (yDip * -0.9), XPos - 3.5 - (clOffset * 0.4), YPos -  10 + (yDip * -1));
-    stroke(baseColour, 100, 100);
-    line(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 3.5 - (clOffset * 0.4), YPos -  10 + (yDip * -1));  
+    if(horns >= 0.5) {
+      fill(baseColour + 20, 100, 90);
+      triangle(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 4 - (clOffset * 0.05), YPos -  3 + (yDip * -0.5), XPos - 3.5 - (clOffset * 0.4), YPos -  10 + (yDip * -1));
+      fill(baseColour + 6, 100, 50);
+      triangle(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 1.5 + (clOffset * 0.05), YPos -  2.8 + (yDip * -0.9), XPos - 3.5 - (clOffset * 0.4), YPos -  10 + (yDip * -1));
+      stroke(baseColour, 100, 100);
+      line(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 3.5 - (clOffset * 0.4), YPos -  10 + (yDip * -1));  
+    }
   }
 
-  function rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, smoke) {
+  function rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, rightEyePos, noseFlare, smoke, horns) {
     let scaleBrightness;
     let scaleStrokeBrightness;
   
@@ -626,8 +687,7 @@ function Face() {
         vertex(XPos, YPos);
       endShape(CLOSE);
     }
-                    //-0.39
-                    // console.log(cOffset);
+
     //Neck
     if(cOffset <=0) {
       //Second Band
@@ -691,7 +751,7 @@ function Face() {
   
     //Draw Face
     fill(baseColour, 100, 70);
-    // quad(faceX[0], faceY[0], faceX[1], faceY[1], faceX[2], faceY[2], faceX[3], faceY[3]);
+    quad(faceX[0], faceY[0], faceX[1], faceY[1], faceX[2], faceY[2], faceX[3], faceY[3]);
   
     //Face Scales
     scaleBrightness = 60;
@@ -741,33 +801,33 @@ function Face() {
     if(crOffset <= 0) { // SideFace (Long Eye)
       //Upper Eyelid
       fill(eyeColour, 100, 90);
-      curve(XPos + 5 + crOffset / 2 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, XPos + 2 + crOffset / 2, YPos + 0.5 + eyeTilt, XPos + 4 + crOffset * 0.1, YPos -0.5 - eyeTilt, XPos - 2 - crOffset / 4 + eyeTilt * 4, YPos - 10);
+      curve(rightEyePos + 5 + crOffset / 2 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, rightEyePos + 2 + crOffset / 2, YPos + 0.5 + eyeTilt, rightEyePos + 4 + crOffset * 0.1, YPos -0.5 - eyeTilt, rightEyePos - 2 - crOffset / 4 + eyeTilt * 4, YPos - 10);
       //Iris
       fill(eyeColour + 10, 100, 100);
       noStroke();
-      ellipse(XPos + 3 + crOffset * 0.3 + cOffset / 12, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3);
+      ellipse(rightEyePos + 3 + crOffset * 0.3 + cOffset / 12, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3);
       //Pupil
       fill(baseColour, 100, 0);
-      ellipse(XPos + 3 + crOffset * 0.3 + cOffset / 10, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
+      ellipse(rightEyePos + 3 + crOffset * 0.3 + cOffset / 10, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
       //Lower Eyelid
       stroke(baseColour, 100, 20);
       fill(baseColour, 100, 20);
-      curve(XPos + 1 + crOffset / 2, YPos + 2 + yDip * 6 + eyeTilt, XPos + 2 + crOffset / 2, YPos + 0.5 + eyeTilt, XPos + 4 + crOffset * 0.1, YPos - 0.5 - eyeTilt, XPos - 2 * crOffset / 2, YPos + 2 - eyeTilt);
+      curve(rightEyePos + 1 + crOffset / 2, YPos + 2 + yDip * 6 + eyeTilt, rightEyePos + 2 + crOffset / 2, YPos + 0.5 + eyeTilt, rightEyePos + 4 + crOffset * 0.1, YPos - 0.5 - eyeTilt, rightEyePos - 2 * crOffset / 2, YPos + 2 - eyeTilt);
     } else { // Hidden Eye (Short Side)
       //Upper Eyelid
       fill(eyeColour, 100, 90);
-      curve(XPos + 5 + crOffset * 0.1 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, XPos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, XPos + 4 - crOffset, YPos -0.5 - eyeTilt, XPos - 2 - crOffset + eyeTilt * 4, YPos - 10);
+      curve(rightEyePos + 5 + crOffset * 0.1 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, rightEyePos + 4 - crOffset, YPos -0.5 - eyeTilt, rightEyePos - 2 - crOffset + eyeTilt * 4, YPos - 10);
       //Iris
       fill(eyeColour + 10, 100, 100);
       noStroke();
-      ellipse(XPos + 3 - crOffset * 0.3, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3 - cOffset / 10, 1 - eyeTilt / 3);
+      ellipse(rightEyePos + 3 - crOffset * 0.3, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3 - cOffset / 10, 1 - eyeTilt / 3);
       //Pupil
       fill(baseColour, 100, 5);
-      ellipse(XPos + 3 - crOffset * 0.3 + cOffset * 0.05, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
+      ellipse(rightEyePos + 3 - crOffset * 0.3 + cOffset * 0.05, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
       //Lower Eyelid
       stroke(baseColour, 100, 20);
       fill(baseColour, 100, 20);
-      curve(XPos + 1 + crOffset * 0.1, YPos + 2 + yDip * 6 + eyeTilt, XPos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, XPos + 4 - crOffset, YPos - 0.5 - eyeTilt, XPos - 2 * crOffset, YPos + 2 - eyeTilt);
+      curve(rightEyePos + 1 + crOffset * 0.1, YPos + 2 + yDip * 6 + eyeTilt, rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, rightEyePos + 4 - crOffset, YPos - 0.5 - eyeTilt, rightEyePos - 2 * crOffset, YPos + 2 - eyeTilt);
     }
   
     //NoseBridge
@@ -816,11 +876,7 @@ function Face() {
     
     //Nostrils
     fill(baseColour, 100, 30);
-    if(smoke && jawDrop > 1){ // Flare Nostrils if Smoke is true
-      quad(XPos + 0.5 + (cOffset * 0.8), YPos + 5.25, XPos + 2 + crOffset, YPos + 4.5, XPos + 2 + crOffset, YPos + 5.5, XPos + 0.5 + (cOffset * 0.8), YPos + 6);
-    } else {
-      quad(XPos + 0.5 + (cOffset * 0.8), YPos + 5.25, XPos + 2 + crOffset, YPos + 4.5, XPos + 2 + crOffset, YPos + 5, XPos + 0.5 + (cOffset * 0.8), YPos + 5.5);
-    }
+    quad(XPos + 0.5 + (cOffset * 0.8), YPos + 5.25, XPos + 2 + crOffset, noseFlare + 2, XPos + 2 + crOffset, noseFlare + 2.5, XPos + 0.5 + (cOffset * 0.8), YPos + 6);
   
     //Mouth
     fill(baseColour, 100, 85);
@@ -864,12 +920,14 @@ function Face() {
     // triangle(XPos + (crOffset * 0.4), YPos - 5 + (yDip * 1.5), lOffset - 4, YPos - 5.5, rOffset + 4, YPos - 5.5);
     
     //Horns
-    fill(baseColour + 20, 100, 90);
-    triangle(XPos + 2 - (crOffset * 0.01), YPos - 2 + (yDip * -1), XPos + 4 - (crOffset * 0.05), YPos - 3 + (yDip * -0.5), XPos + 3.5 - (crOffset * 0.4), YPos - 10 + (yDip * -1));
-    fill(baseColour + 6, 100, 50);
-    triangle(XPos + 2 - (crOffset * 0.01), YPos - 2 + (yDip * -1), XPos + 1.5 + (crOffset * 0.05), YPos - 2.8 + (yDip * -0.9), XPos + 3.5 - (crOffset * 0.4), YPos - 10 + (yDip * -1));
-    stroke(baseColour, 100, 100);
-    line(XPos + 2 - (crOffset * 0.01), YPos - 2 + (yDip * -1), XPos + 3.5 - (crOffset * 0.4), YPos - 10 + (yDip * -1));
+    if(horns >= 0.5) {
+      fill(baseColour + 20, 100, 90);
+      triangle(XPos + 2 - (crOffset * 0.01), YPos - 2 + (yDip * -1), XPos + 4 - (crOffset * 0.05), YPos - 3 + (yDip * -0.5), XPos + 3.5 - (crOffset * 0.4), YPos - 10 + (yDip * -1));
+      fill(baseColour + 6, 100, 50);
+      triangle(XPos + 2 - (crOffset * 0.01), YPos - 2 + (yDip * -1), XPos + 1.5 + (crOffset * 0.05), YPos - 2.8 + (yDip * -0.9), XPos + 3.5 - (crOffset * 0.4), YPos - 10 + (yDip * -1));
+      stroke(baseColour, 100, 100);
+      line(XPos + 2 - (crOffset * 0.01), YPos - 2 + (yDip * -1), XPos + 3.5 - (crOffset * 0.4), YPos - 10 + (yDip * -1));
+    }
   }
 }
 
