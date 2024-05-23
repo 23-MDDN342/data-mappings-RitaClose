@@ -142,7 +142,7 @@ function Face() {
     let YPos = segment_average(positions.chin)[1] - 3;
 
     let jawDrop = (segment_average(positions.bottom_lip)[1] - segment_average(positions.top_lip)[1]) * 10;
-    let eyeTilt = (segment_average(positions.left_eye)[1] - segment_average(positions.left_eyebrow)[1]) / 2;
+    let eyeTilt = (segment_average(positions.left_eye)[1] - segment_average(positions.left_eyebrow)[1]) * 0.8;
 
     let sideTilt = (segment_average(positions.nose_bridge)[0]) * 20;
     let cOffset = sideTilt;
@@ -328,8 +328,13 @@ function Face() {
     // ellipse(chinPt, positions.chin[0][0], 0.5);
     // ellipse(segment_average(positions.chin)[0], 0, 3, 4);
 
-    // this.draw_segment(positions.chin);
-
+    push();
+    rotate(-20);
+    scale(2, 1.5);
+    translate(-0.25, 0.6);
+      this.draw_segment(positions.left_eye);
+      this.draw_segment(positions.right_eye);
+    pop();
 
   }
 
