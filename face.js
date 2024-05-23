@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 6;
@@ -328,13 +328,13 @@ function Face() {
     // ellipse(chinPt, positions.chin[0][0], 0.5);
     // ellipse(segment_average(positions.chin)[0], 0, 3, 4);
 
-    push();
-    rotate(-20);
-    scale(2, 1.5);
-    translate(-0.25, 0.6);
-      this.draw_segment(positions.left_eye);
-      this.draw_segment(positions.right_eye);
-    pop();
+    // push();
+    // rotate(-20);
+    // scale(2, 1.5);
+    // translate(-0.25, 0.6);
+    //   this.draw_segment(positions.left_eye);
+    //   this.draw_segment(positions.right_eye);
+    // pop();
 
   }
 
