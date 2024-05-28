@@ -5,6 +5,7 @@ var canvasHeight = 500;
 var button;
 var curRandomSeed;
 var mainFace;
+var mainNeck;
 var faceImages = [];
 var curFaceIndex = 0;
 var curTrainIndex = 0;
@@ -88,6 +89,8 @@ function setup () {
 
   mainFace = new Face();
   littleFace = new Face();
+
+  // mainNeck = new Neck();
 
   
 
@@ -227,7 +230,7 @@ function getAllJson() {
 }
 
 // global variables for colors
-var bg_color1 = [50, 50, 50];
+var bg_color1 = [124, 100, 20];
 
 var lastSwapTime = 0;
 var millisPerSwap = 5000;

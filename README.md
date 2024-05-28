@@ -50,3 +50,23 @@ Things to work on:
 
 I'm currently debating how difficult it would be to just add the necks in as a separate .js file. The issue isn't not having the global Width/Height variables as I thought, but rather that the 0,0 position isn't in the corner of the canvas, it's in the center where the head is placed. Just need to find where that happens in the system code, then plonk the neck in underneath where the head is being put. Easy as pie.
 I will probably abandon this idea and go back to fixing my more important issues. 
+
+
+
+Photos:
+
+pexels-jimmy-elizarraras
+pexels-yankrukov
+pexels-shkrabaanthony-7081111
+pexels-rdne-8474962
+pexels-kindelmedia-7148409
+pexels-fransa-387080-2336840
+pexels-meijiiiiii-1340914
+pexels-kindelmedia-7149170
+pexels-imustbedead-15427283
+pexels-arthur-goulart-762043-1684847
+
+The conclusion I've come to with the neck situation is that it's not working as it's copied straight from my Project 2 file where the rest of the face positions are. Which doesn't make any sense. It's not that I couldn't spend ages tweaking around with the neck positions to make them work because the shapes are still there - but I feel like I should leave it as is on principle. Because as far as I can see, it should be working.
+
+29/05 (12:41am)
+Ha. I have added a fifth slider and can now rest easy no longer on the minimum, I have changed the curliness of the horns to reflect the curl of the hair. Very original. I also connected the teeth to the eyeColour (AKA the age) so now the teeth round and yellow as the person gets older. Perhaps I'm being a bit too literal with these variables. But no going back now. 

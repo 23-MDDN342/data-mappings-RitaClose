@@ -1,5 +1,4 @@
 const ease = new p5.Ease();
-
 //Bee Variables
 let bees = true;
 let beeSineWidth = 50;
@@ -19,8 +18,20 @@ let ranC = 1; // Random Column Picker
 
 let canvasMultiplier; // To scale sine waves to Canvas size
 
-
 function draw_one_frame(cur_frac) {
+
+	// note: you can draw optional things depending on "debugView"
+	if (debugView) {
+	// we'll draw our "keyframes"
+	noFill();
+	stroke(255, 0, 0);
+	strokeWeight(height/100);
+	// here we "plug in" the values when cur_frac is 0
+	rect(-half_width, 0, rect_width, height);
+	rect( width - half_width, 0, rect_width, height);
+	rect(-width - half_width, 0, rect_width, height);
+	}
+
 	//Canvas Scale Setup
 	let vineCount = 5; // Number of vines
 	if (width < 1000) {
@@ -49,7 +60,7 @@ function draw_one_frame(cur_frac) {
 		clockWise = false;
 		curFracAmount = (cur_frac - 0.5) * 2;
 	}
-
+	
 	if(cur_frac == 0) { // Random Vine Picker
 		ranC = floor(random(1, vineCount));
 	}
@@ -371,15 +382,3 @@ function draw_Flowers(flowerType, X, Y, flowerColour, cur_frac, extraRotation, s
 	}
 	
 }
-
-// // note: you can draw optional things depending on "debugView"
-// if (debugView) {
-//   // we'll draw our "keyframes"
-//   noFill();
-//   stroke(255, 0, 0);
-//   strokeWeight(height/100);
-//   // here we "plug in" the values when cur_frac is 0
-//   rect(-half_width, 0, rect_width, height);
-//   rect( width - half_width, 0, rect_width, height);
-//   rect(-width - half_width, 0, rect_width, height);
-// }
