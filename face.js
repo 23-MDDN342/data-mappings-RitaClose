@@ -135,6 +135,9 @@ function Face() {
    */  
   this.draw = function(positions) {
 
+  //console.log(globalHeight)
+
+
     push();
     scale(0.3, 0.3);
     // // Positional Variables
@@ -166,13 +169,15 @@ function Face() {
     //Neck Bezier Points
     let bX1 = XPos - sideTilt,
     bX2 = XPos - sideTilt * 60,
-    bX3 = XPos + random(-100, 100),
-    bX4 = XPos;
+    bX3 = 0 + random(-100, 100),
+    bX4 = 0;
 
     let bY1 = YPos - 50,
     bY2 = YPos - 5,
-    bY3 = height + random(-30, 30),
-    bY4 = height + 1500;
+    bY3 = globalHeight + random(-30, 30),
+    bY4 = globalHeight;
+
+
 
     // //Beheaded Neck Ending Angle
     // let tilt;
@@ -363,6 +368,7 @@ function Face() {
     //   curve(rightEyePos + 1 + crOffset * 0.1, YPos + 2 + yDip * 6 + eyeTilt, rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, rightEyePos + 4 - crOffset, YPos - 0.5 - eyeTilt, rightEyePos - 2 * crOffset, YPos + 2 - eyeTilt);
     // }
 
+ //// start of eyes
     stroke(baseColour, 100, 20);
     strokeWeight(0.05);
     fill(eyeColour, 100, 80);
@@ -379,12 +385,16 @@ function Face() {
     }
       // console.log(positions.right_eye[0][0]);
       // this.draw_segment(positions.right_eye);
+
+      //// right eye
       beginShape();
         curveVertex(positions.right_eye[0][0], positions.right_eye[0][1]);
         for(i = 0; i < 6; i ++) {
           curveVertex(positions.right_eye[i][0], positions.right_eye[i][1]);
         }
       endShape(CLOSE);
+
+
       noStroke();
       fill(eyeColour, 100, 100);
       ellipse(segment_average(positions.right_eye)[0] + sideTilt * 0.01, segment_average(positions.right_eye)[1], 0.19);
@@ -394,7 +404,7 @@ function Face() {
       // rotate(20);
       // this.draw_segment(positions.left_eye);
     pop();
-
+ /// end of eyes 
   }
 
   // example of a function *inside* the face object.
