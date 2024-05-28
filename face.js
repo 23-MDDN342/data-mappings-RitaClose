@@ -328,12 +328,71 @@ function Face() {
     // ellipse(chinPt, positions.chin[0][0], 0.5);
     // ellipse(segment_average(positions.chin)[0], 0, 3, 4);
 
+    //Right Eye
+    // stroke(baseColour, 60, 40);
+    // strokeWeight(0.1);
+    // if(crOffset <= 0) { // SideFace (Long Eye)
+    //   //Upper Eyelid
+    //   fill(eyeColour, 100, 90);
+    //   curve(rightEyePos + 5 + crOffset / 2 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, rightEyePos + 2 + crOffset / 2, YPos + 0.5 + eyeTilt, rightEyePos + 4 + crOffset * 0.1, YPos -0.5 - eyeTilt, rightEyePos - 2 - crOffset / 4 + eyeTilt * 4, YPos - 10);
+    //   //Iris
+    //   fill(eyeColour + 10, 100, 100);
+    //   noStroke();
+    //   ellipse(rightEyePos + 3 + crOffset * 0.3 + cOffset / 12, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3);
+    //   //Pupil
+    //   fill(baseColour, 100, 0);
+    //   ellipse(rightEyePos + 3 + crOffset * 0.3 + cOffset / 10, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
+    //   //Lower Eyelid
+    //   stroke(baseColour, 100, 20);
+    //   fill(baseColour, 100, 20);
+    //   curve(rightEyePos + 1 + crOffset / 2, YPos + 2 + yDip * 6 + eyeTilt, rightEyePos + 2 + crOffset / 2, YPos + 0.5 + eyeTilt, rightEyePos + 4 + crOffset * 0.1, YPos - 0.5 - eyeTilt, rightEyePos - 2 * crOffset / 2, YPos + 2 - eyeTilt);
+    // } else { // Hidden Eye (Short Side)
+    //   //Upper Eyelid
+    //   fill(eyeColour, 100, 90);
+    //   curve(rightEyePos + 5 + crOffset * 0.1 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, rightEyePos + 4 - crOffset, YPos -0.5 - eyeTilt, rightEyePos - 2 - crOffset + eyeTilt * 4, YPos - 10);
+    //   //Iris
+    //   fill(eyeColour + 10, 100, 100);
+    //   noStroke();
+    //   ellipse(rightEyePos + 3 - crOffset * 0.3, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3 - cOffset / 10, 1 - eyeTilt / 3);
+    //   //Pupil
+    //   fill(baseColour, 100, 5);
+    //   ellipse(rightEyePos + 3 - crOffset * 0.3 + cOffset * 0.05, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
+    //   //Lower Eyelid
+    //   stroke(baseColour, 100, 20);
+    //   fill(baseColour, 100, 20);
+    //   curve(rightEyePos + 1 + crOffset * 0.1, YPos + 2 + yDip * 6 + eyeTilt, rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, rightEyePos + 4 - crOffset, YPos - 0.5 - eyeTilt, rightEyePos - 2 * crOffset, YPos + 2 - eyeTilt);
+    // }
+
+    stroke(baseColour, 100, 20);
+    strokeWeight(0.05);
+    fill(eyeColour, 100, 80);
+
     push();
-    rotate(-20);
-    scale(2, 1.5);
-    translate(-0.25, 0.6);
-      this.draw_segment(positions.left_eye);
-      this.draw_segment(positions.right_eye);
+    if(crOffset <= 0) {
+      rotate(sideTilt * 3 + eyeTilt);
+      translate(rightEyePos + 2 + crOffset / 2 - positions.right_eye[0][0], 0.5 + eyeTilt);
+      scale(2 - (sideTilt * 0.03), 1.5);
+    } else {
+      rotate(sideTilt * -3 + eyeTilt);
+      translate(rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt);
+      scale(2 + (sideTilt * 0.03), 1.5);
+    }
+      // console.log(positions.right_eye[0][0]);
+      // this.draw_segment(positions.right_eye);
+      beginShape();
+        curveVertex(positions.right_eye[0][0], positions.right_eye[0][1]);
+        for(i = 0; i < 6; i ++) {
+          curveVertex(positions.right_eye[i][0], positions.right_eye[i][1]);
+        }
+      endShape(CLOSE);
+      noStroke();
+      fill(eyeColour, 100, 100);
+      ellipse(segment_average(positions.right_eye)[0] + sideTilt * 0.01, segment_average(positions.right_eye)[1], 0.19);
+      fill(eyeColour, 100, 5);
+      ellipse(segment_average(positions.right_eye)[0] + sideTilt * 0.01, segment_average(positions.right_eye)[1], 0.05, 0.19);
+      // translate(0.25, 0);
+      // rotate(20);
+      // this.draw_segment(positions.left_eye);
     pop();
 
   }
