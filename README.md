@@ -45,3 +45,8 @@ Things to work on:
 - Add Background Wallpaper
 - Beheaded Function
 - 
+
+28/05
+
+I'm currently debating how difficult it would be to just add the necks in as a separate .js file. The issue isn't not having the global Width/Height variables as I thought, but rather that the 0,0 position isn't in the corner of the canvas, it's in the center where the head is placed. Just need to find where that happens in the system code, then plonk the neck in underneath where the head is being put. Easy as pie.
+I will probably abandon this idea and go back to fixing my more important issues. 
