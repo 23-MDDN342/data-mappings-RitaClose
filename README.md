@@ -32,3 +32,16 @@ Draw Eyes with Specific Points
 - age for a variable? eye colour?
 
 - change shape on neck
+
+---
+Things to work on:
+-
+
+- Eye Shape
+- Disapearing Neck?
+- Training
+- New Images
+- Training Quiz
+- Add Background Wallpaper
+- Beheaded Function
+- 

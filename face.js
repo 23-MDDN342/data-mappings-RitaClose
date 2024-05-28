@@ -166,8 +166,8 @@ function Face() {
     //Neck Bezier Points
     let bX1 = XPos - sideTilt,
     bX2 = XPos - sideTilt * 60,
-    bX3 = XPos + random(-100, 100),
-    bX4 = XPos;
+    bX3 = width / 2 + random(-100, 100),
+    bX4 = width / 2;
 
     let bY1 = YPos - 50,
     bY2 = YPos - 5,
@@ -187,7 +187,6 @@ function Face() {
     // } else {
     //   tilt =  0;
     // }
-
 
     //Draw Neck
     colorMode(HSB);
@@ -289,8 +288,8 @@ function Face() {
       crOffset = sideTilt * 0.5;
       yDip = sideTilt * 0.1;
 
-      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, rightEyePos, noseFlare, smoke, horns, scaleType, positions.right_eye);
-      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns, scaleType, positions.left_eye);
+      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, rightEyePos, noseFlare, smoke, horns, scaleType);
+      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns, scaleType);
 
     } else { // Right Side on Top
       // lOffset = sideTilt * -0.7
@@ -301,8 +300,8 @@ function Face() {
       crOffset = sideTilt * 0.75;
       yDip = (sideTilt * -1) * 0.1;
 
-      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns, scaleType, positions.left_eye);
-      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, rightEyePos, noseFlare, smoke, horns, scaleType, positions.right_eye);
+      leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns, scaleType);
+      rightFace(XPos, YPos, rOffset, cOffset, crOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, rightEyePos, noseFlare, smoke, horns, scaleType);
 
       //Draw Conditional Smoke
       colorMode(RGB);
@@ -329,13 +328,72 @@ function Face() {
     // ellipse(chinPt, positions.chin[0][0], 0.5);
     // ellipse(segment_average(positions.chin)[0], 0, 3, 4);
 
-    // push();
-    // rotate(-20);
-    // scale(2, 1.5);
-    // translate(-0.25, 0.6);
-    //   this.draw_segment(positions.left_eye);
-    //   this.draw_segment(positions.right_eye);
-    // pop();
+    //Right Eye
+    // stroke(baseColour, 60, 40);
+    // strokeWeight(0.1);
+    // if(crOffset <= 0) { // SideFace (Long Eye)
+    //   //Upper Eyelid
+    //   fill(eyeColour, 100, 90);
+    //   curve(rightEyePos + 5 + crOffset / 2 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, rightEyePos + 2 + crOffset / 2, YPos + 0.5 + eyeTilt, rightEyePos + 4 + crOffset * 0.1, YPos -0.5 - eyeTilt, rightEyePos - 2 - crOffset / 4 + eyeTilt * 4, YPos - 10);
+    //   //Iris
+    //   fill(eyeColour + 10, 100, 100);
+    //   noStroke();
+    //   ellipse(rightEyePos + 3 + crOffset * 0.3 + cOffset / 12, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3);
+    //   //Pupil
+    //   fill(baseColour, 100, 0);
+    //   ellipse(rightEyePos + 3 + crOffset * 0.3 + cOffset / 10, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
+    //   //Lower Eyelid
+    //   stroke(baseColour, 100, 20);
+    //   fill(baseColour, 100, 20);
+    //   curve(rightEyePos + 1 + crOffset / 2, YPos + 2 + yDip * 6 + eyeTilt, rightEyePos + 2 + crOffset / 2, YPos + 0.5 + eyeTilt, rightEyePos + 4 + crOffset * 0.1, YPos - 0.5 - eyeTilt, rightEyePos - 2 * crOffset / 2, YPos + 2 - eyeTilt);
+    // } else { // Hidden Eye (Short Side)
+    //   //Upper Eyelid
+    //   fill(eyeColour, 100, 90);
+    //   curve(rightEyePos + 5 + crOffset * 0.1 + eyeTilt * 2, YPos - 4 + eyeTilt * 2, rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, rightEyePos + 4 - crOffset, YPos -0.5 - eyeTilt, rightEyePos - 2 - crOffset + eyeTilt * 4, YPos - 10);
+    //   //Iris
+    //   fill(eyeColour + 10, 100, 100);
+    //   noStroke();
+    //   ellipse(rightEyePos + 3 - crOffset * 0.3, YPos + 0.4 + eyeTilt / 4, 1 - eyeTilt / 3 - cOffset / 10, 1 - eyeTilt / 3);
+    //   //Pupil
+    //   fill(baseColour, 100, 5);
+    //   ellipse(rightEyePos + 3 - crOffset * 0.3 + cOffset * 0.05, YPos + 0.4 + eyeTilt / 4, 0.4 - eyeTilt / 5, 1);
+    //   //Lower Eyelid
+    //   stroke(baseColour, 100, 20);
+    //   fill(baseColour, 100, 20);
+    //   curve(rightEyePos + 1 + crOffset * 0.1, YPos + 2 + yDip * 6 + eyeTilt, rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt, rightEyePos + 4 - crOffset, YPos - 0.5 - eyeTilt, rightEyePos - 2 * crOffset, YPos + 2 - eyeTilt);
+    // }
+
+    stroke(baseColour, 100, 20);
+    strokeWeight(0.05);
+    fill(eyeColour, 100, 80);
+
+    push();
+    if(crOffset <= 0) {
+      rotate(sideTilt * 3 + eyeTilt);
+      translate(rightEyePos + 2 + crOffset / 2 - positions.right_eye[0][0], 0.5 + eyeTilt);
+      scale(2 - (sideTilt * 0.03), 1.5);
+    } else {
+      rotate(sideTilt * -3 + eyeTilt);
+      translate(rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt);
+      scale(2 + (sideTilt * 0.03), 1.5);
+    }
+      // console.log(positions.right_eye[0][0]);
+      // this.draw_segment(positions.right_eye);
+      beginShape();
+        curveVertex(positions.right_eye[0][0], positions.right_eye[0][1]);
+        for(i = 0; i < 6; i ++) {
+          curveVertex(positions.right_eye[i][0], positions.right_eye[i][1]);
+        }
+      endShape(CLOSE);
+      noStroke();
+      fill(eyeColour, 100, 100);
+      ellipse(segment_average(positions.right_eye)[0] + sideTilt * 0.01, segment_average(positions.right_eye)[1], 0.19);
+      fill(eyeColour, 100, 5);
+      ellipse(segment_average(positions.right_eye)[0] + sideTilt * 0.01, segment_average(positions.right_eye)[1], 0.05, 0.19);
+      // translate(0.25, 0);
+      // rotate(20);
+      // this.draw_segment(positions.left_eye);
+    pop();
 
   }
 
@@ -391,7 +449,7 @@ function Face() {
     return settings;
   }
 
-  function leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns, scaleType, eyePositions) {
+  function leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, smoke, horns, scaleType) {
     let scaleBrightness;
     let scaleStrokeBrightness;
 
@@ -523,9 +581,6 @@ function Face() {
     }
 
     //Left Eye
-    fill(360, 100, 100);
-    // square(eyePositions[0], eyePositions[1], 15);
-    console.log(eyePositions[0][39]);
     stroke(baseColour, 40, 60);
     strokeWeight(0.1);
     if(clOffset >= 0) { //Side Facing Eye
@@ -695,23 +750,23 @@ function Face() {
         scaleStrokeBrightness = 10;
         let band2cX = [XPos + 4 - rOffset * 2, XPos + 3 - rOffset * 7.5, XPos + 3 - rOffset * 6, XPos + 3 - rOffset * 1.5];
         let band2cY = [YPos + 5, YPos + 3, YPos + 7, YPos + 8];
-        // quad(band2cX[0], band2cY[0], band2cX[1], band2cY[1], band2cX[2], band2cY[2], band2cX[3], band2cY[3]);
-        // DrawScales(false, 7 + (cOffset / -2), 5, band2cX, band2cY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        quad(band2cX[0], band2cY[0], band2cX[1], band2cY[1], band2cX[2], band2cY[2], band2cX[3], band2cY[3]);
+        DrawScales(false, 7 + (cOffset / -2), 5, band2cX, band2cY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
         //Middle Quad
         scaleBrightness = 30;
         scaleStrokeBrightness = 20;
         let band2bX = [XPos + 6 - rOffset * 0.4, XPos + 4 - rOffset * 5.5, XPos + 3 - rOffset * 7.5, XPos + 4 - rOffset * 2];
         let band2bY = [YPos - 3, YPos - 2, YPos + 3, YPos + 5];
-        // quad(band2bX[0], band2bY[0], band2bX[1], band2bY[1], band2bX[2], band2bY[2], band2bX[3], band2bY[3]);
-        // DrawScales(false, 5 + (cOffset / -2), 12, band2bX, band2bY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        quad(band2bX[0], band2bY[0], band2bX[1], band2bY[1], band2bX[2], band2bY[2], band2bX[3], band2bY[3]);
+        DrawScales(false, 5 + (cOffset / -2), 12, band2bX, band2bY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
         //Top Quad
         fill(baseColour, 100, 40);
         scaleBrightness = 40;
         scaleStrokeBrightness = 30;
         let band2aX = [XPos + 4 - rOffset * 3.5, XPos + 4 - rOffset * 5, XPos + 4 - rOffset * 5.5, XPos + 6 - rOffset * 0.4];
         let band2aY = [YPos - 5, YPos - 3, YPos - 2, YPos - 3];
-        // quad(band2aX[0], band2aY[0], band2aX[1], band2aY[1], band2aX[2], band2aY[2], band2aX[3], band2aY[3]);
-        // DrawScales(false, 4 + (cOffset / -2), 3, band2aX, band2aY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        quad(band2aX[0], band2aY[0], band2aX[1], band2aY[1], band2aX[2], band2aY[2], band2aX[3], band2aY[3]);
+        DrawScales(false, 4 + (cOffset / -2), 3, band2aX, band2aY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
   
       //First Band
         //Bottom Quad
@@ -719,25 +774,24 @@ function Face() {
         scaleStrokeBrightness = 20;
         let band1cX = [XPos + 4 + rOffset, XPos + 4 - rOffset * 2, XPos + 3 - rOffset * 1.5, XPos + 3 + rOffset];
         let band1cY = [YPos + 5, YPos + 5, YPos + 8, YPos + 7];
-        // quad(band1cX[0], band1cY[0], band1cX[1], band1cY[1], band1cX[2], band1cY[2], band1cX[3], band1cY[3]);
-        // DrawScales(false, 4 + (cOffset / -4), 5, band1cX, band1cY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        quad(band1cX[0], band1cY[0], band1cX[1], band1cY[1], band1cX[2], band1cY[2], band1cX[3], band1cY[3]);
+        DrawScales(false, 4 + (cOffset / -4), 5, band1cX, band1cY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
         //Middle Quad
         scaleBrightness = 40;
         scaleStrokeBrightness = 30;
         let band1bX = [XPos + 6 + rOffset, XPos + 6 - rOffset * 0.4, XPos + 4 - rOffset * 2, XPos + 4 + rOffset];
         let band1bY = [YPos - 3, YPos - 3, YPos + 5, YPos + 5];
-        // quad(band1bX[0], band1bY[0], band1bX[1], band1bY[1], band1bX[2], band1bY[2], band1bX[3], band1bY[3]);
-        // DrawScales(false, 4 + (cOffset / -6), 14, band1bX, band1bY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        quad(band1bX[0], band1bY[0], band1bX[1], band1bY[1], band1bX[2], band1bY[2], band1bX[3], band1bY[3]);
+        DrawScales(false, 4 + (cOffset / -6), 14, band1bX, band1bY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
         //Top Quad
         scaleBrightness = 50;
         scaleStrokeBrightness = 40;
         let band1aX = [XPos + 4 + rOffset, XPos + 4 - rOffset * 3.5, XPos + 6 - rOffset * 0.4, XPos + 6 + rOffset];
         let band1aY = [YPos - 5.5, YPos - 5, YPos - 3, YPos - 3];
         quad(band1aX[0], band1aY[0], band1aX[1], band1aY[1], band1aX[2], band1aY[2], band1aX[3], band1aY[3]);
-
-        // DrawScales(false, 5 + (cOffset / -4), 4, band1aX, band1aY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        DrawScales(false, 5 + (cOffset / -4), 4, band1aX, band1aY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
     }
-
+  
     //Face Points
     let faceX = [XPos + (crOffset * 1.05), XPos + 6 + rOffset, XPos + 4 + rOffset, XPos + 3 + crOffset];
     let faceY = [YPos - (yDip * 0.4), YPos - 3, YPos + 5, YPos + 6];
@@ -755,7 +809,7 @@ function Face() {
     //Face Scales
     scaleBrightness = 60;
     scaleStrokeBrightness = 30;
-    // DrawScales(false, 15 - cOffset, 15, faceX, faceY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+    DrawScales(false, 15 - cOffset, 15, faceX, faceY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
   
     //Jaw Points
     let jawX = [XPos + 3 + crOffset, XPos + 4 + rOffset, XPos + 3 + rOffset, XPos + 1.5 + crOffset];
