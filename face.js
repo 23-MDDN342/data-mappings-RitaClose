@@ -4,7 +4,7 @@
  */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
 var NUM_SLIDERS = 6;
@@ -166,13 +166,13 @@ function Face() {
     //Neck Bezier Points
     let bX1 = XPos - sideTilt,
     bX2 = XPos - sideTilt * 60,
-    bX3 = width / 2 + random(-100, 100),
-    bX4 = width / 2;
+    bX3 = XPos + random(-100, 100),
+    bX4 = XPos;
 
     let bY1 = YPos - 50,
     bY2 = YPos - 5,
     bY3 = height + random(-30, 30),
-    bY4 = height + 100;
+    bY4 = height + 1500;
 
     // //Beheaded Neck Ending Angle
     // let tilt;
