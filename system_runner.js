@@ -5,6 +5,7 @@ var canvasHeight = 500;
 var button;
 var curRandomSeed;
 var mainFace;
+var mainNeck;
 var faceImages = [];
 var curFaceIndex = 0;
 var curTrainIndex = 0;
@@ -71,6 +72,8 @@ function squaredDistance(a, b) {
 
 var haveStarted = false;
 function setup () {
+
+
   let keys = Object.keys(sample_images);
   for (let i=0; i<keys.length; i++) {
     let obj = {};
@@ -86,6 +89,10 @@ function setup () {
 
   mainFace = new Face();
   littleFace = new Face();
+
+  // mainNeck = new Neck();
+
+  
 
   for(var i=0; i<selfieData.length; i++) {
     var data = selfieData[i];
@@ -223,7 +230,7 @@ function getAllJson() {
 }
 
 // global variables for colors
-var bg_color1 = [50, 50, 50];
+var bg_color1 = [124, 100, 20];
 
 var lastSwapTime = 0;
 var millisPerSwap = 5000;
@@ -252,8 +259,12 @@ function num_dist(e1, e2) {
 
 var processing_vid_face = false;
 var lastProcessedVidFace = null;
-
+let globalWidth;
+let globalHeight; 
 async function draw () {
+  globalWidth = width
+  globalHeight = height
+  //console.log(globalWidth)
   if (!model_loaded) {
     return;
   }

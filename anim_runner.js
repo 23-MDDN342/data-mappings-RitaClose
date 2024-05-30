@@ -7,7 +7,7 @@ const debugZoomScale = 0.5;
 const buffersPerFrame = 1;
 
 // probably best not to modify anything below this line
-const frameMax = 24;
+const frameMax = 96;
 let recording = false;
 let gifRecorder = null;
 let debugZoom = false;
@@ -25,6 +25,7 @@ function setup () {
 
 function mousePressed(){
 }
+
 
 function draw () {
   let animation_max_frames = frameMax * buffersPerFrame;
@@ -46,6 +47,7 @@ function draw () {
   }
 
   draw_one_frame(cur_frac);
+
 
   pop();
 
