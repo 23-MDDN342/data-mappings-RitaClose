@@ -1,16 +1,9 @@
-/*
- * FaceMap class - holds all informaiton about one mapped
- * face and is able to draw itself.
- */  
 
 // remove this or set to false to enable full program (load will be slower)
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 // this can be used to set the number of sliders to show
-var NUM_SLIDERS = 6;
-
-// other variables can be in here too
-// here's some examples for colors used
+var NUM_SLIDERS = 5;
 
 // Positional Variables
 this.XPos = 0;
@@ -27,8 +20,6 @@ this.eyeHue = 46;
 this.eyeColour = 46; // 0, 360
 this.scaleShape = 0;
 
-// this.tilt = this.sideTilt;
-
 //Tilt Offset Variables Setup
 this.lOffset = 0; // Left Offset
 this.cOffset = this.sideTilt; // Central Offset
@@ -39,44 +30,6 @@ this.crOffset = 0; // Right Central
 
 //Perspective Dip: Y Axis
 this.yDip = 0;
-
-//List Var
-
-// this.band1aX = [];
-// this.band1aY = [];
-// this.band1bX = [];
-// this.band1bY = [];
-// this.band1cX = [];
-// this.band1cX = [];
-// this.band1cY = [];
-
-// this.band2aX = [];
-// this.band2aY = [];
-// this.band2bX = [];
-// this.band2bY = [];
-// this.band2cX = [];
-// this.band2cX = [];
-// this.band2cY = [];
-
-// this.noseBridgeX = [];
-// this.noseBridgeY = [];
-// this.noseX = [];
-// this.noseY = [];
-// this.forredX = [];
-// this.forredY = [];
-// this.faceX = [];
-// this.faceY = [];
-// this.mouthX = [];
-// this.mouthY = [];
-// this.jawX = [];
-// this.jawY = [];
-// this.teethNo;
-// this.teethRowPtX = [];
-// this.teethRowPtY = [];
-
-
-
-// const stroke_color = [95, 52, 8];
 
 // example of a global function
 // given a segment, this returns the average point [x, y]
@@ -91,29 +44,27 @@ function segment_average(segment) {
   return [sum_x / s_len , sum_y / s_len];
 }
 
-// This where you define your own face object
+// HYDRA FACE
 function Face() {
-  // these are state variables for a face
 
+  // Positional Variables
+  let XPos = 0;
+  let YPos = -0.5;
+
+  // Feature-Based Face Variables
   this.horns = 1;
   this.curl = 10;
   this.eyeHue = 46;
   this.baseHue = 100;
   this.scaleShape = 0;
 
-  // Positional Variables
-  let XPos = 0;
-  let YPos = -0.5;
-
-  // FaceDraw Variables
+  // Positional-Based Face Variables
   let sideTilt = 0; // -10, 10
   let jawDrop = 0; // 1, 3
   let eyeTilt = 0; // -0.5, 0.5
   let smoke = 0; // true/false
   let baseColour = 124; // 0, 360
   let eyeColour = 46; // 0, 360
-
-  // this.tilt = this.sideTilt;
 
   //Tilt Offset Variables Setup
   let lOffset = 0; // Left Offset
@@ -135,27 +86,26 @@ function Face() {
    *    bottom_lip, top_lip, nose_tip, nose_bridge, 
    */  
   this.draw = function(positions) {
-
-  //console.log(globalHeight)
-
-
+    //Scale Face for New Program
     push();
     scale(0.3, 0.3);
-    // // Positional Variables
+
+    // Reset Variables to .Positions
     let XPos = 0;
     let YPos = segment_average(positions.chin)[1] - 3;
 
-    let jawDrop = (segment_average(positions.bottom_lip)[1] - segment_average(positions.top_lip)[1]) * 10;
-    let eyeTilt = (segment_average(positions.left_eye)[1] - segment_average(positions.left_eyebrow)[1]) * 0.8;
-
     let sideTilt = (segment_average(positions.nose_bridge)[0]) * 20;
     let cOffset = sideTilt;
+
+    let jawDrop = (segment_average(positions.bottom_lip)[1] - segment_average(positions.top_lip)[1]) * 10;
+    let eyeTilt = (segment_average(positions.left_eye)[1] - segment_average(positions.left_eyebrow)[1]) * 0.8;
 
     let leftEyePos = segment_average(positions.left_eye)[0];
     let rightEyePos = segment_average(positions.right_eye)[0];
 
     let noseFlare = (segment_average(positions.top_lip)[1] - segment_average(positions.nose_tip)[1]);
     
+    // Reset Feature-Based Variables
     let horns = this.horns;
     let curl = this.curl;
 
@@ -169,6 +119,7 @@ function Face() {
 
     noFill();
     noStroke();
+
     //Neck Bezier Points
     let bX1 = XPos - sideTilt,
     bX2 = XPos - sideTilt * 60,
@@ -179,23 +130,6 @@ function Face() {
     bY2 = YPos - 5,
     bY3 = globalHeight + random(-30, 30),
     bY4 = globalHeight + 1500;
-
-
-
-
-    // //Beheaded Neck Ending Angle
-    // let tilt;
-    // if(bX2 > (bX1 + 50)) {
-    //   tilt = -90;
-    // } else if (bX2 > (bX1 + 10)) {
-    //   tilt = -40;
-    // } else if (bX2 < (bX1 - 50)){
-    //   tilt = 90;
-    // } else if (bX2 < (bX1 - 10)) {
-    //   tilt = 40;
-    // } else {
-    //   tilt =  0;
-    // }
 
     //Draw Neck
     colorMode(HSB);
@@ -289,8 +223,6 @@ function Face() {
 
     //Draw Hydra Face
     if (sideTilt >= 0) { //LeftSide on Top
-      // lOffset = sideTilt * 0.1;
-      // rOffset = sideTilt * -0.75;
       let rOffset = (positions.chin[16])[0] * -0.75;
       let lOffset = (positions.chin[0])[0] * 0.1;
       clOffset = sideTilt * 0.75;
@@ -301,8 +233,6 @@ function Face() {
       leftFace(XPos, YPos, lOffset, rOffset, cOffset, clOffset, yDip, jawDrop, eyeColour, baseColour, eyeTilt, leftEyePos, noseFlare, curl, horns, scaleType);
 
     } else { // Right Side on Top
-      // lOffset = sideTilt * -0.7
-      // rOffset = sideTilt * 0.1;
       let rOffset = (positions.chin[16])[0] * 0.1;
       let lOffset = (positions.chin[0])[0] * -0.7;
       clOffset = sideTilt * 0.5;
@@ -331,52 +261,8 @@ function Face() {
 
     }
     pop();
-    // head
-
-    // fill(255, 100, 100);
-    // ellipse(chinPt, positions.chin[0][0], 0.5);
-    // ellipse(segment_average(positions.chin)[0], 0, 3, 4);
-
- //// start of eyes
-    // stroke(baseColour, 100, 20);
-    // strokeWeight(0.05);
-    // fill(eyeColour, 100, 80);
-
-    // push();
-    // if(crOffset <= 0) {
-    //   rotate(sideTilt * 3 + eyeTilt);
-    //   translate(rightEyePos + 2 + crOffset / 2 - positions.right_eye[0][0], 0.5 + eyeTilt);
-    //   scale(2 - (sideTilt * 0.03), 1.5);
-    // } else {
-    //   rotate(sideTilt * -3 + eyeTilt);
-    //   translate(rightEyePos + 2 + crOffset * 0.1, YPos + 0.5 + eyeTilt);
-    //   scale(2 + (sideTilt * 0.03), 1.5);
-    // }
-    //   // console.log(positions.right_eye[0][0]);
-    //   // this.draw_segment(positions.right_eye);
-
-    // //   //// right eye
-    //   beginShape();
-    //     curveVertex(positions.right_eye[0][0], positions.right_eye[0][1]);
-    //     for(i = 0; i < 6; i ++) {
-    //       curveVertex(positions.right_eye[i][0], positions.right_eye[i][1]);
-    //     }
-    //   endShape(CLOSE);
-
-
-    //   noStroke();
-    //   fill(eyeColour, 100, 100);
-      // ellipse(segment_average(positions.right_eye)[0] + sideTilt * 0.01, segment_average(positions.right_eye)[1], 0.19);
-    //   fill(eyeColour, 100, 5);
-      // ellipse(segment_average(positions.right_eye)[0] + sideTilt * 0.01, segment_average(positions.right_eye)[1], 0.05, 0.19);
-    //   // translate(0.25, 0);
-    //   // rotate(20);
-    //   // this.draw_segment(positions.left_eye);
-    // pop();
-    /// end of eyes 
   }
 
-  // example of a function *inside* the face object.
   // this draws a segment, and do_loop will connect the ends if true
   this.draw_segment = function(segment, do_loop) {
     for(let i=0; i<segment.length; i++) {
@@ -403,13 +289,6 @@ function Face() {
     this.baseHue = map(settings[2], 0, 100, 20, 300);
     this.scaleShape = map(settings[3], 0, 100, 0, 1);
     this.curl = map(settings[4], 0, 100, 0, 12);
-
-    // this.sideTilt = map(settings[0], 0, 100, -10, 10);
-    // this.jawDrop = map(settings[1], 0, 100, 1, 3);
-    // this.eyeTilt = map(settings[2], 0, 100, -0.5, 0.5);
-    // this.smoke = int(map(settings[3], 0, 100, 0, 1));
-    // this.baseColour = map(settings[4], 0, 100, 0, 360);
-    // this.eyeColour = map(settings[5], 0, 100, 0, 360);
   }
 
   /* get internal properties as list of numbers 0-100 */
@@ -420,13 +299,6 @@ function Face() {
     settings[2] = map(this.baseHue, 20, 300, 0, 100);
     settings[3] = map(this.scaleShape, 0, 1, 0, 100);
     settings[4] = map(this.curl, 0, 12, 0, 100);
-
-    // settings[0] = map(this.sideTilt, -10, 10, 0, 100);
-    // settings[1] = map(this.jawDrop, 1, 3, 0, 100);
-    // settings[2] = map(this.eyeTilt, -0.5, 0.5, 0, 100);
-    // settings[3] = map(this.smoke, 0, 1, 0, 100);
-    // settings[4] = map(this.baseColour, 0, 360, 0, 100);
-    // settings[5] = map(this.eyeColourColour, 0, 360, 0, 100);
     return settings;
   }
 
@@ -434,9 +306,11 @@ function Face() {
     let scaleBrightness;
     let scaleStrokeBrightness;
 
+    //Set Variables Effected by Age (Through EyeColor)
     let toothColour = map(eyeColour, 0, 100, -50, 50);
     let toothBluntness = map(eyeColour, 0, 100, 1.2, 0.1);
 
+    //If subject is over 50
     let aged;
     if(eyeColour > 50) {
       aged = true;
@@ -474,14 +348,14 @@ function Face() {
         let band2cX = [XPos - 4 - lOffset * 2, XPos - 3 - lOffset * 7.5, XPos - 3 - lOffset * 6, XPos - 3 - lOffset * 1.5];
         let band2cY = [YPos + 5, YPos + 3, YPos + 7, YPos + 8];
         quad(band2cX[0], band2cY[0], band2cX[1], band2cY[1], band2cX[2], band2cY[2], band2cX[3], band2cY[3]);
-        // DrawScales(true, 7 + (cOffset / 2), 5, band2cX, band2cY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        DrawScales(true, 7 + (cOffset / 2), 5, band2cX, band2cY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
         //Middle Quad
         scaleBrightness = 35;
         scaleStrokeBrightness = 20;
         let band2bX = [XPos - 6 - lOffset * 0.4, XPos - 4 - lOffset * 5.5, XPos - 3 - lOffset * 7.5, XPos - 4 - lOffset * 2];
         let band2bY = [YPos - 3, YPos - 2, YPos + 3, YPos + 5];
         quad(band2bX[0], band2bY[0], band2bX[1], band2bY[1], band2bX[2], band2bY[2], band2bX[3], band2bY[3]);
-        // DrawScales(true, 5 + (cOffset / 2), 12, band2bX, band2bY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        DrawScales(true, 5 + (cOffset / 2), 12, band2bX, band2bY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
         //Top Quad
         fill(baseColour, 100, 40);
         scaleBrightness = 45;
@@ -489,7 +363,7 @@ function Face() {
         let band2aX = [XPos - 4 - lOffset * 3.5, XPos - 4 - lOffset * 5, XPos - 4 - lOffset * 5.5, XPos - 6 - lOffset * 0.4];
         let band2aY = [YPos - 5, YPos - 3, YPos - 2, YPos - 3];
         quad(band2aX[0], band2aY[0], band2aX[1], band2aY[1], band2aX[2], band2aY[2], band2aX[3], band2aY[3]);
-        // DrawScales(true, 4 + (cOffset / 2), 3, band2aX, band2aY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        DrawScales(true, 4 + (cOffset / 2), 3, band2aX, band2aY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
 
       //First Band
         //Bottom Quad
@@ -498,21 +372,21 @@ function Face() {
         let band1cX = [XPos - 4 + lOffset, XPos - 4 - lOffset * 2, XPos - 3 - lOffset * 1.5, XPos - 3 + lOffset];
         let band1cY = [YPos + 5, YPos + 5, YPos + 8, YPos + 7];
         quad(band1cX[0], band1cY[0], band1cX[1], band1cY[1], band1cX[2], band1cY[2], band1cX[3], band1cY[3]);
-        // DrawScales(true, 4 + (cOffset / 4), 5, band1cX, band1cY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        DrawScales(true, 4 + (cOffset / 4), 5, band1cX, band1cY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
         //Middle Quad
         scaleBrightness = 45;
         scaleStrokeBrightness = 30;
         let band1bX = [XPos - 6 + lOffset, XPos - 6 - lOffset * 0.4, XPos - 4 - lOffset * 2, XPos - 4 + lOffset];
         let band1bY = [YPos - 3, YPos - 3, YPos + 5, YPos + 5];
         quad(band1bX[0], band1bY[0], band1bX[1], band1bY[1], band1bX[2], band1bY[2], band1bX[3], band1bY[3]);
-        // DrawScales(true, 4 + (cOffset / 6), 14, band1bX, band1bY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        DrawScales(true, 4 + (cOffset / 6), 14, band1bX, band1bY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
         //Top Quad
         scaleBrightness = 55;
         scaleStrokeBrightness = 40;
         let band1aX = [XPos - 4 + lOffset, XPos - 4 - lOffset * 3.5, XPos - 6 - lOffset * 0.4, XPos - 6 + lOffset];
         let band1aY = [YPos - 5.5, YPos - 5, YPos - 3, YPos - 3];
         quad(band1aX[0], band1aY[0], band1aX[1], band1aY[1], band1aX[2], band1aY[2], band1aX[3], band1aY[3]);
-        // DrawScales(true, 5 + (cOffset / 4), 4, band1aX, band1aY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
+        DrawScales(true, 5 + (cOffset / 4), 4, band1aX, band1aY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
     }
     
     //Face Points
@@ -560,7 +434,7 @@ function Face() {
     line(jawX[0] + 0.5, jawY[0], jawX[1] + 0.2, jawY[1]);
 
     //Teeth
-    if(!aged) {
+    if(!aged) { // Subject is under 50
       for(row = teethNo; row > 0; row --) { // Place Teeth along Jaw Gap
         fill(0, 0, 100 - row * 5);
         noStroke();
@@ -571,7 +445,7 @@ function Face() {
           triangle(-0.3, 0, 0.3, 0, 0, -2.3 + (row/5));
         pop();
       }
-    } else {
+    } else { // Subject is over 50
       for(row = teethNo; row > 0; row --) { // Place Teeth along Jaw Gap
         fill(50, toothColour, 100 - row * 5);
         noStroke();
@@ -646,13 +520,13 @@ function Face() {
       push();
         translate(teethRowPtX + 0.3, teethRowPtY);
         if(row == teethNo) {
-          if (!aged) { 
+          if (!aged) { // Subject is under 50
             triangle(-0.3, 0, 0.3, 0, 0, 2 + (row / 5));
           } else { 
             fill(50, toothColour, 90);
             rect(0, 0, 0.6, toothBluntness, 1);
           }
-        } else {
+        } else { // Subject is over 50
           if (!aged) { 
             triangle(-0.3, 0, 0.3, 0, 0, 1.5);
           } else {
@@ -698,15 +572,15 @@ function Face() {
       let teethRowPtY = map(row, 0, teethNo, mouthY[0], mouthY[1]);
       push();
         translate(teethRowPtX + 0.3, teethRowPtY);
-        if(!aged) {
+        if(!aged) { // Subject under 50
           triangle(-0.3, 0, 0.3, 0, 0, -1);
-        } else {
+        } else { // Subject over 50
           fill(50, toothColour, 90);
           rect(0, 0, 0.6, -toothBluntness - (row/10), 1);
         }
       pop();
     }
-// console.log(eyeColour);
+
     //Front Lower Lip
     strokeWeight(0.3);
     stroke(baseColour, 100, 20);
@@ -726,27 +600,8 @@ function Face() {
     noStroke();
     fill(baseColour, 100, 65);
     triangle(XPos + (clOffset * 0.4), YPos - 5 + (yDip * 1.5), XPos + lOffset - 4, YPos - 5.5, XPos + rOffset + 4, YPos - 5.5);
-    
-    //Horns
-    // if(horns > 4) {
-    //   fill(baseColour + 20, 100, 90);
-    //   triangle(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 4 - (clOffset * 0.05), YPos -  3 + (yDip * -0.5), XPos - 3.5 - (clOffset * 0.4) - clOffset * 0.1, YPos -  horns + (yDip * -1));
-    //   fill(baseColour + 6, 100, 50);
-    //   triangle(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 1.5 + (clOffset * 0.05), YPos -  2.8 + (yDip * -0.9), XPos - 3.5 - (clOffset * 0.4) - clOffset * 0.1, YPos -  horns + (yDip * -1));
-    //   stroke(baseColour, 100, 100);
-    //   line(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 3.5 - (clOffset * 0.4) - clOffset * 0.1, YPos -  horns + (yDip * -1));  
-    // }
 
-    // beginShape();
-    //   curveVertex(XPos - 1.5 + (clOffset * 0.05), YPos -  2.8 + (yDip * -0.9));
-
-    //   curveVertex(XPos - 3.5 - (clOffset * 0.4) - clOffset * 0.1, YPos -  horns + (yDip * -1));
-
-    //   curveVertex(XPos - 4 - (clOffset * 0.05), YPos -  3 + (yDip * -0.5));
-      
-    //   curveVertex(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1));
-    // endShape(CLOSE);
-
+    //Straight Horns
     if(horns > 4 && curl <= 3) {
       fill(baseColour + 20, 100, 90);
       triangle(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 4 - (clOffset * 0.05), YPos -  3 + (yDip * -0.5), XPos - 3.5 - (clOffset * 0.4) - clOffset * 0.1, YPos -  horns + (yDip * -1));
@@ -756,6 +611,7 @@ function Face() {
       line(XPos - 2 - (clOffset * 0.01), YPos - 2 + (yDip * -1), XPos - 3.5 - (clOffset * 0.4) - clOffset * 0.1, YPos -  horns + (yDip * -1));  
     }
 
+    //Curly Horns
     let straighten = map(curl, 0, 12, 4, 0);
     
     if(horns > 4 && curl > 3) {
@@ -779,9 +635,11 @@ function Face() {
     let scaleBrightness;
     let scaleStrokeBrightness;
 
+    //Set Variables Effected by Age (Through EyeColor)
     let toothColour = map(eyeColour, 0, 100, -50, 50);
     let toothBluntness = map(eyeColour, 0, 100, 1.2, 0.1);
 
+    // If Subject is over 50
     let aged;
     if(eyeColour > 50) {
       aged = true;
@@ -906,7 +764,7 @@ function Face() {
     line(jawX[0] - 0.5, jawY[0], jawX[1] - 0.2, jawY[1]);
   
     //Teeth
-    if(!aged) {
+    if(!aged) { // Subject is under 50
       for(row = teethNo; row > 0; row --) { // Space teeth along jaw
         fill(0, 0, 100 - row * 5);
         noStroke();
@@ -917,7 +775,7 @@ function Face() {
           triangle(-0.3, 0, 0.3, 0, 0, -2.3 + (row/5));
         pop();
       }
-    } else {
+    } else { // Subject is over 50
       for(row = teethNo; row > 0; row --) { // Space teeth along jaw
         fill(50, toothColour, 100 - row * 5);
         noStroke();
@@ -991,16 +849,16 @@ function Face() {
       push();
         translate(teethRowPtX - 0.3, teethRowPtY);
         if(row == teethNo) {
-          if (!aged) { 
+          if (!aged) { //Subject under 50
             triangle(-0.3, 0, 0.3, 0, 0, 2 + (row / 5));
-          } else { 
+          } else { //Subject over 50
             fill(50, toothColour, 90);
             rect(0, 0, 0.6, toothBluntness, 1);
           }
         } else {
-          if (!aged) { 
+          if (!aged) { //Subject under 50
             triangle(-0.3, 0, 0.3, 0, 0, 1.5);
-          } else {
+          } else { //Subject over 50
             fill(50, toothColour, 90);
             rect(0, 0, 0.6, toothBluntness, 1);
           };
@@ -1043,9 +901,9 @@ function Face() {
       let teethRowPtY = map(row, 0, teethNo, mouthY[0], mouthY[1]);
       push();
         translate(teethRowPtX - 0.3, teethRowPtY);
-        if(!aged) {
+        if(!aged) { //Subject under 50
           triangle(-0.3, 0, 0.3, 0, 0, -1);
-        } else {
+        } else { //Subject over 50
           fill(50, toothColour, 90);
           rect(0, 0, 0.6, -toothBluntness - (row/10), 1);
         }
@@ -1067,11 +925,7 @@ function Face() {
     quad(forredX[0], forredY[0], forredX[1], forredY[1], forredX[2], forredY[2], forredX[3], forredY[3]);
     DrawScales(false, 10 - cOffset, 7, forredX, forredY, baseColour, scaleBrightness, scaleStrokeBrightness, scaleType);
   
-    //Crown
-    // fill(baseColour, 100, 90);
-    // triangle(XPos + (crOffset * 0.4), YPos - 5 + (yDip * 1.5), lOffset - 4, YPos - 5.5, rOffset + 4, YPos - 5.5);
-    
-    //Horns
+    //Straight Horns
     if(horns > 4 && curl <= 3) {
       fill(baseColour + 20, 100, 90);
       triangle(XPos + 2 - (crOffset * 0.01), YPos - 2 + (yDip * -1), XPos + 4 - (crOffset * 0.05), YPos - 3 + (yDip * -0.5), XPos + 3.5 - (crOffset * 0.4) + crOffset * 0.1, YPos - horns + (yDip * -1));
@@ -1081,6 +935,7 @@ function Face() {
       line(XPos + 2 - (crOffset * 0.01), YPos - 2 + (yDip * -1), XPos + 3.5 - (crOffset * 0.4) + crOffset * 0.1, YPos - horns + (yDip * -1));
     }
 
+    //Curly Horns
     let straighten = map(curl, 0, 12, 4, 0);
 
     if(horns > 4 && curl > 3) {
