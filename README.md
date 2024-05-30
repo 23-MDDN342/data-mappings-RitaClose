@@ -2,9 +2,66 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=14993370&assignment_repo_type=AssignmentRepo)
 ## 2024 MDDN342 Assignment 3: Data Mappings
 
-REPLACE ALL TEXT IN THIS FILE
+# Murphy the Hydra
+### Recognising facial features & retargeting them onto a mythical creature.
 
-This README should be used to document your design.
+#### Process
+
+I got the idea for this 'photobooth' concept from a previous project - creating a Hydra head made with a series of changeable parameters - and adapted it for use in conjunction with AI for both set images and video.
+
+From the beginning, I knew that I wanted not only replace the subjects face, but to block out their entire body to make the transformation and the Hydra mask more immersive. I found it quite difficult initially to choose which elements of the face would remain static, and which to move based on the image of a face provided. 
+In the end, I decided that the jaw would be a key component, much like it is in lots of snapchat filters. As well as this, the nostrils will move according to the distance between the top of the nose and the lips, the eyes will tilt depending on how raised/depressed the eyebrows are, and their position will move depending on where they are situated on the face. Additionally, the Hydra will breathe smoke if the jaw is open wide enough.
+
+I retargeted the following parameters:
+
+##### Length of Horns = Length of Hair
+e.g. Short Hair on subject = Short Horns
+If the hair is too short or non-existent then the Hydra will have no horns.
+
+##### Curl of Horns = Curliness of Hair
+e.g. Curly Hair = Curly Horns
+As the subjects hair gets curlier, so too will the 'curl-factor' of the horns. If the hair is straight or only slightly wavy then the Hydra will have triangular shaped horns instead.
+
+##### Colour of Hydra = Hair Colour
+e.g. Black Hair = Blue Hydra
+The Colour of the Hydra ranges the full spectrum of colour starting at red and going around to pink. The colours map as follows:
+Red Hair = Red Hydra
+Blond Hair = Yellow/Light Green Hydra
+Light Brown Hair = Green Hydra
+Brown Hair = Cyan Hydra
+Dark Brown Hair = Dark Blue Hydra
+Black Hair = Purple/Pink Hydra
+
+##### Scale Shape = Masculine / Feminine
+This parameter is only either on or off:
+Masculine Subject: Round Scales
+Feminine Subject: Pointy Scales
+
+##### Eye Colour = Age
+e.g. Red Eyes = Young Subject
+
+This colour range goes from red to green. These parameters are a little less accurate than the others so don't be offended about the results.
+Red Eyes = Young Subject
+Orange Eyes = 20's - 30's
+Yellow Eyes = 40's - 50's
+Green Eyes = 60 +
+
+For this parameter I went for a transfer that was less literal. In compensation I also changed other features based on the results of the same variable: As the subject gets older their teeth will go from white to a more yellow/brown shade and once the subject ages over 50 their teeth will be more rounded and less pointy, from there as they get older they will be more worn down/smaller.
+
+
+THings that worked,
+failed experiments
+training issues or things that went well.
+reflection
+Neck issue
+
+
+
+
+
+
+
+
 
 15/05
 I am not a fan so far. Object Oriented coding is difficult and I don't entirely understand it. So far I have imported my characters face into the new code framework but the variables aren't working right so far so I need to tinker a bit to make them better. Also I need to re-orient all of the measurements so that they follow the faces from the AI instead of keeping the same all the time.
